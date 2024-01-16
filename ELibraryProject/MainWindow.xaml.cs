@@ -20,10 +20,6 @@ namespace ELibraryProject
         {
             InitializeComponent();
             MainFrame.Content = new LoginPage();
-            this.Height = 450;
-            this.Width = 686;
-            this.ResizeMode = ResizeMode.NoResize;
-            this.Title = "Библиотека by IvanStar";
         }
     }
 }
