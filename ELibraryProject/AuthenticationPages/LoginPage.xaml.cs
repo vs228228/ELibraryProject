@@ -30,8 +30,8 @@ namespace ELibraryProject
     public partial class LoginPage : Page
     {
 
-        string connectiongString;
         private SqlConnection? sqlConnection;
+        private TryEnterToSystem? tryToEnter = null; // нужно указать обработчик входа
 
         public LoginPage()
         {
@@ -39,7 +39,7 @@ namespace ELibraryProject
             IncorrectPasswordLable.Visibility = Visibility.Hidden;
         }
 
-        private TryEnterToSystem? tryToEnter = null; // нужно указать обработчик входа
+        
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -57,7 +57,30 @@ namespace ELibraryProject
 
         private void ForgotPassword_Click(object sender, RoutedEventArgs e)
         {
+            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            if (connectionString == null)
+            {
+                throw new InvalidOperationException("Connection string is null");
+            }
 
+            connectionString = connectionString
+                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
+                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+
+            sqlConnection = new SqlConnection(connectionString);
+            sqlConnection.Open();
+
+            string sqlExpression = "INSERT INTO UsersInfo (Login, Password) " +
+                "VALUES ('Lalka', '12344321')";
+
+            SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
+
+            if (sqlConnection.State == ConnectionState.Open)
+            {
+                command.ExecuteNonQuery();
+                MessageBox.Show("сюда её");
+                sqlConnection.Close();
+            }
         }
 
 
