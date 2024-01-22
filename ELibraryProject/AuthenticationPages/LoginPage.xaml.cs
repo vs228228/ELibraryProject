@@ -31,6 +31,7 @@ namespace ELibraryProject
     {
 
         string connectiongString;
+        private SqlConnection? sqlConnection;
 
         public LoginPage()
         {
