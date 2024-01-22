@@ -18,6 +18,7 @@ using System.Data;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
 using ELibraryProject.Classes;
+using Microsoft.VisualBasic.Logging;
 
 
 namespace ELibraryProject
@@ -32,7 +33,7 @@ namespace ELibraryProject
     {
 
         private SqlConnection? sqlConnection;
-        private TryEnterToSystem? tryToEnter = AccountManagerClass.EnterToSystem; // нужно указать обработчик входа
+        private TryEnterToSystem? tryToEnter = AccountManagerClass.EnterToSystem; // обработчик входа
 
         public LoginPage()
         {
@@ -59,30 +60,7 @@ namespace ELibraryProject
 
         private void ForgotPassword_Click(object sender, RoutedEventArgs e)
         {
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
-
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-
-            sqlConnection = new SqlConnection(connectionString);
-            sqlConnection.Open();
-
-            string sqlExpression = "INSERT INTO UsersInfo (Login, Password) " +
-                "VALUES ('Lalka', '12344321')";
-
-            SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
-
-            if (sqlConnection.State == ConnectionState.Open)
-            {
-                command.ExecuteNonQuery();
-                MessageBox.Show("сюда её");
-                sqlConnection.Close();
-            }
+            
         }
 
 
