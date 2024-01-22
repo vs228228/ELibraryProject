@@ -18,7 +18,6 @@ using System.Data;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
 using ELibraryProject.Classes;
-using Microsoft.VisualBasic.Logging;
 
 
 namespace ELibraryProject
@@ -33,7 +32,7 @@ namespace ELibraryProject
     {
 
         private SqlConnection? sqlConnection;
-        private TryEnterToSystem? tryToEnter = AccountManagerClass.EnterToSystem; // обработчик входа
+        private TryEnterToSystem? tryToEnter = AccountManagerClass.EnterToSystem; // нужно указать обработчик входа
 
         public LoginPage()
         {
