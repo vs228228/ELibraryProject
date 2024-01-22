@@ -17,6 +17,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
+using ELibraryProject.Classes;
 
 
 namespace ELibraryProject
@@ -31,7 +32,7 @@ namespace ELibraryProject
     {
 
         private SqlConnection? sqlConnection;
-        private TryEnterToSystem? tryToEnter = null; // нужно указать обработчик входа
+        private TryEnterToSystem? tryToEnter = AccountManagerClass.EnterToSystem; // нужно указать обработчик входа
 
         public LoginPage()
         {
@@ -48,6 +49,7 @@ namespace ELibraryProject
             if (tryToEnter is not null && tryToEnter(login, password) is true) // обязательно отделить проверку на null
             {
                 // переход на некст страницу с учетом данных логина и пароля
+                MessageBox.Show("Дальше должна быть загружена страница ЛК");
             }
             else
             {
