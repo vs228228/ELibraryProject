@@ -18,6 +18,7 @@ using System.Data;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
 using ELibraryProject.Classes;
+using ELibraryProject.AuthenticationPages;
 
 
 namespace ELibraryProject
@@ -53,13 +54,14 @@ namespace ELibraryProject
             }
             else
             {
-                IncorrectPasswordLable.Visibility = Visibility.Visible;
+                IncorrectPasswordLable.Visibility = Visibility.Visible; // неправильный логин или пароль
             }
         }
 
         private void ForgotPassword_Click(object sender, RoutedEventArgs e)
         {
-            
+            NavigationService.Navigate(new ForgotPasswordPage(this));
+            IncorrectPasswordLable.Visibility = Visibility.Hidden;
         }
 
 

@@ -6,13 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Data;
 using System.Configuration;
-using Microsoft.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Windows.Forms;
 
 namespace ELibraryProject.Classes
 {
-    internal class AccountManagerClass
+    /// <summary>
+    /// Класс, работающий с данными пользователя. Реализованы методы регистрации, входа в аккаунт
+    /// и восстановление пароля
+    /// </summary>
+    internal static class AccountManagerClass
     {
        static SqlConnection? sqlConnection;
         static public bool EnterToSystem(string login, string password)
@@ -27,20 +31,23 @@ namespace ELibraryProject.Classes
             connectionString = connectionString
                 .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
                 .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+            // 3 строки выше нужны т.к. у нас нет сервера и мы перекидываемся БД с одного ПК на другой
+            // Потому путь получаем вот таким путём
 
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
-            string sqlExpression = $"SELECT Login, Password FROM UsersInfo WHERE Login = @login AND Password = @password";
+            string sqlExpression = $"SELECT Login, Password FROM UsersInfo WHERE (Login = @login OR Email = @login) AND Password = @password";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@login", login);
             command.Parameters.AddWithValue("@password", password);
             SqlDataReader reader = command.ExecuteReader();
+            // 1. Создаем строку запроса; 2. Отправляем запрос; 3-4. Настраеваем параметры;
+            // 5. Создаем чтением запроса
 
-            if (reader.Read())
+            if (reader.Read()) // Если результат запроса не пустой
             {
-
                 sqlConnection.Close();
                 return true;
             }
@@ -69,15 +76,18 @@ namespace ELibraryProject.Classes
             connectionString = connectionString
                 .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
                 .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+            // строки выше создают строку подключения к БД
 
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
+            // Запрос на проверку почты
             string sqlExpression = $"SELECT Email FROM UsersInfo WHERE Email = @email";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@email", email);
             SqlDataReader reader = command.ExecuteReader();
+
 
             if(reader.Read())
             {
@@ -86,9 +96,9 @@ namespace ELibraryProject.Classes
                 message = "Эта почта уже зарегистрирована";
                 return false;
             }
-
             reader.Close();
 
+            // Новый запрос на првоерку логина
             sqlExpression = $"SELECT Login FROM UsersInfo WHERE Login = @login";
             command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@login", login);
@@ -110,6 +120,7 @@ namespace ELibraryProject.Classes
                 return false;
             }
 
+            // Запрос на добавление данных пользователя в БД
             sqlExpression = "INSERT INTO UsersInfo (Login, Password, Email, Name, SecondName, " +
                 "CodeWord, CodeWordHint) " +
                 "VALUES (@Login, @Password, @Email, @Name, @SecondName, @CodeWord, @CodeWordHint)";
@@ -128,6 +139,7 @@ namespace ELibraryProject.Classes
                 command.ExecuteNonQuery();
                 sqlConnection.Close();
                 return true;
+                // Регистрация окончена, данные в БД
             }
             else
             {
@@ -138,8 +150,11 @@ namespace ELibraryProject.Classes
 
             
          }
-
-       static bool checkForNulls(string name, string secondName, string email, string login, string password, string passwordAgain,
+ 
+        /// <summary>
+        /// Метод вернёт true и в msg сообщение о первой пустой строке или вернёт false, если все строки не пустые
+        /// </summary>
+        static bool checkForNulls(string name, string secondName, string email, string login, string password, string passwordAgain,
          string codeWord, string tipToCodeWord, out string message)
         {
             if(name == "")
@@ -191,6 +206,41 @@ namespace ELibraryProject.Classes
             }
 
             message = "Nope";
+            return false;
+        }
+
+        public static bool isUserExist(string login, out string? message)
+        {
+            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            if (connectionString == null)
+            {
+                throw new InvalidOperationException("Connection string is null");
+            }
+
+            connectionString = connectionString
+                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
+                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+            // строки выше создают строку подключения к БД
+
+            sqlConnection = new SqlConnection(connectionString);
+            sqlConnection.Open();
+
+            // Запрос на сверку строки, котору вписал пользователь, с логином/почтой
+            string sqlExpression = $"SELECT CodeWordHint FROM UsersInfo WHERE Email = @email OR Login = @login";
+
+            SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
+            command.Parameters.AddWithValue("@email", login);
+            command.Parameters.AddWithValue("@login", login);
+            SqlDataReader reader = command.ExecuteReader();
+
+
+            if (reader.Read())
+            {
+                message = reader.GetValue(0).ToString();
+                sqlConnection.Close();
+                return true;
+            }
+            message = "Пользователь с такими данными не найден";
             return false;
         }
 
