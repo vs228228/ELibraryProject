@@ -301,9 +301,7 @@ namespace ELibraryProject.Classes
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
-            // Запрос на сверку кодового слова
-            // string sqlExpression = "SELECT UPDATE Password = @password FROM UsersInfo WHERE Email = @email OR" +
-            //    " Login = @login";
+            // Запрос на смену(обновление) поля Password
             string sqlExpression = "UPDATE UsersInfo SET Password = @password WHERE Email = @email or Login = @login";
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@password", password);
