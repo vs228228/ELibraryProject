@@ -22,6 +22,7 @@ namespace ELibraryProject.AuthenticationPages
     public partial class ForgotPasswordPage : Page
     {
         LoginPage loginPage;
+        private string login = "";
         public ForgotPasswordPage(LoginPage loginPage)
         {
             InitializeComponent();
@@ -41,10 +42,28 @@ namespace ELibraryProject.AuthenticationPages
                 CodeWordLable.Visibility = Visibility.Visible;
                 CodeWordTip.Content += msg;
                 CodeWordTip.Visibility = Visibility.Visible;
+                EnterButton.Click -= EnterButton_Click;
+                EnterButton.Click += SecondHandlerFoButton;
+                login = LoginTextBox.Text;
+
             }
             else
             {
                 MessageBox.Show(msg);
+            }
+        }
+
+        private void SecondHandlerFoButton(object sender, RoutedEventArgs e)
+        {
+            // Дописать переход на след страницу в случае успеха
+            if (AccountManagerClass.isCodeWordRight(CodeWordTextBox.Text, login))
+            {
+                System.Windows.Forms.MessageBox.Show("Всё верно");
+                 NavigationService.Navigate(new ChangePasswordPage(loginPage, login));
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Кодовое слово введено неверно");
             }
         }
     }

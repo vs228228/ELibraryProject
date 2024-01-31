@@ -19,7 +19,7 @@ namespace ELibraryProject.Classes
     internal static class AccountManagerClass
     {
        static SqlConnection? sqlConnection;
-        static public bool EnterToSystem(string login, string password)
+        public static bool EnterToSystem(string login, string password)
         {
             
             string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
@@ -49,16 +49,18 @@ namespace ELibraryProject.Classes
             if (reader.Read()) // Если результат запроса не пустой
             {
                 sqlConnection.Close();
+                reader.Close(); ;
                 return true;
             }
             else
             {
                 sqlConnection.Close();
+                reader.Close();
                 return false;
             }
         }
 
-        static public bool RegInSystem(string name, string secondName, string email, string login, string password, string passwordAgain,
+        public static bool RegInSystem(string name, string secondName, string email, string login, string password, string passwordAgain,
          string codeWord, string tipToCodeWord, out string message)
          {
             if(checkForNulls(name, secondName, email, login, password, passwordAgain,
@@ -241,6 +243,80 @@ namespace ELibraryProject.Classes
                 return true;
             }
             message = "Пользователь с такими данными не найден";
+            return false;
+        }
+
+        public static bool isCodeWordRight(string codeWord, string login)
+        {
+            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            if (connectionString == null)
+            {
+                throw new InvalidOperationException("Connection string is null");
+            }
+
+            connectionString = connectionString
+                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
+                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+            // строки выше создают строку подключения к БД
+
+            sqlConnection = new SqlConnection(connectionString);
+            sqlConnection.Open();
+
+            // Запрос на сверку кодового слова
+            string sqlExpression = "SELECT Password FROM UsersInfo WHERE (Email = @email OR Login = @login)" +
+                " and CodeWord = @codeword";
+            SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
+            command.Parameters.AddWithValue("@login", login);
+            command.Parameters.AddWithValue("@email", login);
+            command.Parameters.AddWithValue("@codeWord", codeWord);
+            SqlDataReader reader = command.ExecuteReader();
+            if(reader.Read())
+            {
+                sqlConnection.Close();
+                reader.Close();
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool changePassword(string login, string password, string passwordAgain, out string msg)
+        {
+            if (password != passwordAgain)
+            {
+                msg = "Пароли не совпадают";
+                return false;
+            }
+            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            if (connectionString == null)
+            {
+                throw new InvalidOperationException("Connection string is null");
+            }
+
+            connectionString = connectionString
+                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
+                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+            // строки выше создают строку подключения к БД
+
+            sqlConnection = new SqlConnection(connectionString);
+            sqlConnection.Open();
+
+            // Запрос на сверку кодового слова
+            // string sqlExpression = "SELECT UPDATE Password = @password FROM UsersInfo WHERE Email = @email OR" +
+            //    " Login = @login";
+            string sqlExpression = "UPDATE UsersInfo SET Password = @password WHERE Email = @email or Login = @login";
+            SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
+            command.Parameters.AddWithValue("@password", password);
+            command.Parameters.AddWithValue("@email", login);
+            command.Parameters.AddWithValue("@login", login);
+            if (sqlConnection.State == ConnectionState.Open)
+            {
+                command.ExecuteNonQuery();
+                sqlConnection.Close();
+                msg = "Good";
+                return true;
+            }
+            msg = "Неизвестная ошибка. Попробуйте ещё раз позже";
             return false;
         }
 
