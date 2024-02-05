@@ -32,13 +32,15 @@ namespace ELibraryProject
     public partial class LoginPage : Page
     {
 
-        private SqlConnection? sqlConnection;
+     //   private SqlConnection? sqlConnection;
         private TryEnterToSystem? tryToEnter = AccountManagerClass.EnterToSystem; // нужно указать обработчик входа
+        MainWindow mainWindow;
 
-        public LoginPage()
+        public LoginPage(MainWindow mainWindow)
         {
             InitializeComponent();
             IncorrectPasswordLable.Visibility = Visibility.Hidden;
+            this.mainWindow = mainWindow;
         }
 
         
@@ -50,7 +52,10 @@ namespace ELibraryProject
             if (tryToEnter is not null && tryToEnter(login, password) is true) // обязательно отделить проверку на null
             {
                 // переход на некст страницу с учетом данных логина и пароля
-                MessageBox.Show("Дальше должна быть загружена страница ЛК");
+              //  MessageBox.Show("Дальше должна быть загружена страница ЛК");
+                new UserWindow().Show();
+                mainWindow.Close();
+                
             }
             else
             {

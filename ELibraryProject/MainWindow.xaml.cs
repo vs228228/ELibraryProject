@@ -19,7 +19,7 @@ namespace ELibraryProject
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Content = new LoginPage();
+            MainFrame.Content = new LoginPage(this);
         }
     }
 }
