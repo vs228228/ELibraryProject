@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /ELibraryProject/Classes/EnterToSystemClass.cs
 /ELibraryProject/PersonalAccounts/EmployeeWindow.xaml
+/ELibraryProject/PersonalAccounts/EmployeeWindow.xaml.cs

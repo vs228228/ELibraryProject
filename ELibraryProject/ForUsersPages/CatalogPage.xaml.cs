@@ -23,17 +23,33 @@ namespace ELibraryProject.ForUsersPages
     /// 
     public partial class CatalogPage : Page
     {
-        ObservableCollection<DoubleBook> books = new ObservableCollection<DoubleBook>();
-        CatalogeManager catalogeManager = new CatalogeManager();
+        ObservableCollection<Book> books = new ObservableCollection<Book>();
+        CatalogManager catalogManager = new CatalogManager();
 
         public CatalogPage()
         {
             InitializeComponent();
-            books = catalogeManager.LoadBooks();
-            Books1ListBox.ItemsSource = books;
+            books = catalogManager.LoadBooks();
+            BooksItemsControl.ItemsSource = books;
             
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+
+            // Ищем TextBlock внутри кнопки по имени
+            TextBlock textBlock = clickedButton.FindName("InfoTextBlock") as TextBlock;
+
+            if (textBlock != null)
+            {
+                // Теперь есть доступ к TextBlock и его свойствам
+                string text = textBlock.Text;
+                int a = text.IndexOf(",");
+                text = text.Substring(0, a);
+                MessageBox.Show("Текст кнопки: " + text);
+            }
+        }
     }
 
 }
