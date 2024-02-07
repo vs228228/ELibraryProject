@@ -8,27 +8,28 @@ namespace ELibraryProject.Classes
 {
     class Book
     {
-        public string NameAndAuthor { get; set; }
 
-        public Book(string BookName, string Author, string Description, decimal price)
+        public Book(string Title, string Author, string Description, decimal price)
         {
-            this.BookName = BookName;
+            this.Title = Title;
             this.Author = Author;
             this.Description = Description;
             this.Price = price;
-            NameAndAuthor = BookName + ", " + Author;
+            TitleAndAuthor = Title + ", " + Author;
         }
 
-        public Book(string BookName, string Author, decimal price)
+        public Book(string Title, string Author, decimal price)
         {
-            this.BookName = BookName;
+            this.Title = Title;
             this.Author = Author;
             this.Price = price;
-            NameAndAuthor += BookName + ", " + Author;
+            TitleAndAuthor = Title + ", " + Author;
             this.Description = "";
         }
 
-        public string BookName { get; set; }
+        public string TitleAndAuthor { get; set; }
+
+        public string Title { get; set; }
 
         public string Author { get; set; }
 
