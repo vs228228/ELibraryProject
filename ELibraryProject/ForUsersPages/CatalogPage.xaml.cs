@@ -34,7 +34,7 @@ namespace ELibraryProject.ForUsersPages
             
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LoadBookPage(object sender, RoutedEventArgs e)
         {
             Button clickedButton = (Button)sender;
 
@@ -45,9 +45,7 @@ namespace ELibraryProject.ForUsersPages
             {
                 // Теперь есть доступ к TextBlock и его свойствам
                 string text = textBlock.Text;
-                int a = text.IndexOf(",");
-                text = text.Substring(0, a);
-                MessageBox.Show("Текст кнопки: " + text);
+                NavigationService.Navigate(new BookPage(text, this));
             }
         }
     }

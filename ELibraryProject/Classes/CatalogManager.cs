@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using Microsoft.Data.SqlClient;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ELibraryProject.Classes
 {
@@ -59,6 +60,33 @@ namespace ELibraryProject.Classes
             // Потому путь получаем вот таким путём
 
             return connectionString;
+        }
+
+        public Book GetCertainBook(string TitleAndAuthor)
+        {
+            string connectionString = getConnectionString();
+            string title = GetBookName(TitleAndAuthor);
+
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
+            sqlConnection.Open();
+
+            string sqlExpression = "SELECT * FROM Books WHERE Title = @title";
+            SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
+            command.Parameters.AddWithValue("@title", title);
+            
+            SqlDataReader reader = command.ExecuteReader();
+
+            reader.Read();
+            Book book = new Book(reader["Title"].ToString(), reader["Author"].ToString(), (decimal)reader["Price"]);
+
+            return book;
+
+        }
+
+        private string GetBookName(string TitleAndAuthor)
+        {
+            int index = TitleAndAuthor.IndexOf(",");
+            return TitleAndAuthor.Substring(0, index);
         }
     }
 }

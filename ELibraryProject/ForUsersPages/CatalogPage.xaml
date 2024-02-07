@@ -5,8 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ELibraryProject.PersonalAccounts"
       mc:Ignorable="d"
-      Title="UserMainPage" Height="770" Width="860">
-
+      Title="CatalogPage" Height="770" Width="860">
 
     <Grid Background="Wheat">
         <Grid.RowDefinitions>
@@ -23,9 +22,9 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Click="Button_Click">
+                        <Button Click="LoadBookPage">
                             <DockPanel DockPanel.Dock="Left" Width="400" Height="350">
-                                <TextBlock x:Name="InfoTextBlock" Text="{Binding TitleAndAuthor}" DockPanel.Dock="Top" FontSize="18"/>
+                                <TextBlock x:Name="InfoTextBlock" Text="{Binding TitleAndAuthor}" DockPanel.Dock="Top" FontSize="17"/>
                                 <TextBlock Text="Тут будет фотка" DockPanel.Dock="Left" Width="150" />
                                 <TextBlock TextWrapping="Wrap" Text="Длинное описаниe" DockPanel.Dock = "Right" />
                             </DockPanel>

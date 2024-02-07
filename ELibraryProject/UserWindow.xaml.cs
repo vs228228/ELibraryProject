@@ -1,4 +1,5 @@
 ﻿// using ELibraryProject.PersonalAccounts;
+using ELibraryProject.ForUsersPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace ELibraryProject
             this.MaxWidth = 860;
             this.MinHeight = 810;
             this.MinWidth = 860;
-            UserFrame.Content = new ForUsersPages.CatalogPage();
+            UserFrame.Content = new CatalogPage();
 
         }
     }
