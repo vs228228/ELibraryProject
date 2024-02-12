@@ -21,19 +21,8 @@ namespace ELibraryProject.Classes
        static SqlConnection? sqlConnection;
         public static bool EnterToSystem(string login, string password)
         {
-            
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
 
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // 3 строки выше нужны т.к. у нас нет сервера и мы перекидываемся БД с одного ПК на другой
-            // Потому путь получаем вот таким путём
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
@@ -69,17 +58,7 @@ namespace ELibraryProject.Classes
                 return false;
             }
 
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
-
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // строки выше создают строку подключения к БД
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
@@ -213,17 +192,8 @@ namespace ELibraryProject.Classes
 
         public static bool isUserExist(string login, out string? message)
         {
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
 
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // строки выше создают строку подключения к БД
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
@@ -248,17 +218,7 @@ namespace ELibraryProject.Classes
 
         public static bool isCodeWordRight(string codeWord, string login)
         {
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
-
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // строки выше создают строку подключения к БД
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
@@ -287,17 +247,8 @@ namespace ELibraryProject.Classes
                 msg = "Пароли не совпадают";
                 return false;
             }
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
 
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // строки выше создают строку подключения к БД
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
@@ -316,6 +267,24 @@ namespace ELibraryProject.Classes
             }
             msg = "Неизвестная ошибка. Попробуйте ещё раз позже";
             return false;
+
+        }
+
+        private static string getConnectionString()
+        {
+            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            if (connectionString == null)
+            {
+                throw new InvalidOperationException("Connection string is null");
+            }
+
+            connectionString = connectionString
+                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
+                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+            // 3 строки выше нужны т.к. у нас нет сервера и мы перекидываемся БД с одного ПК на другой
+            // Потому путь получаем вот таким путём
+
+            return connectionString;
         }
 
     }
