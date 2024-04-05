@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ELibraryProject.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace ELibraryProject
             this.loginPage = loginPage;
         }
 
-        private TryToReg? tryToReg = null; // поменять потом на метод, который регистрирует
+        private TryToReg? tryToReg = AccountManagerClass.RegInSystem; // ссылка на метод, который регистрирует
 
         private void BackLable_Click(object sender, RoutedEventArgs e)
         {
@@ -40,6 +41,7 @@ namespace ELibraryProject
 
         private void RebButton_Click(object sender, RoutedEventArgs e)
         {
+            
             string name = FirstNameTextBox.Text;
             string secondName = SecondNameTextBox.Text;
             string email = EmailTextBox.Text;
@@ -49,15 +51,19 @@ namespace ELibraryProject
             string codeWord = CodeWordTextBox.Text;
             string tipToCodeWord = TipToCodeWordTextBox.Text;
 
+            string msg = "";
 
             if(tryToReg != null &&
-                tryToReg(name, secondName, email, login, password, passwordAgain, codeWord, tipToCodeWord, out string msg) is true)
+                tryToReg(name, secondName, email, login, password, passwordAgain, codeWord, tipToCodeWord, out msg) is true)
             {
                 // сделать возвращение к прошлому окну и успешную регистрацию
+                MessageBox.Show("Регистрация прошла успешна");
+                NavigationService.Navigate(loginPage);
             }
             else
             {
                 // написать сообщение об  регистрацию неуспешной. msg вернёт сообщение с первой ошибкой
+                MessageBox.Show(msg);
             }
         }
     }

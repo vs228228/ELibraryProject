@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
+using System.Data;
+using System.Configuration;
+using Microsoft.Data.SqlClient;
+using ELibraryProject.Classes;
+using ELibraryProject.AuthenticationPages;
+using System.IO;
+using System.Text.Json;
+
 
 namespace ELibraryProject
 {
@@ -24,13 +34,19 @@ namespace ELibraryProject
     public partial class LoginPage : Page
     {
 
-        public LoginPage()
+     //   private SqlConnection? sqlConnection;
+        private TryEnterToSystem? tryToEnter = AccountManagerClass.TryEnterToSystem; // нужно указать обработчик входа
+        MainWindow mainWindow;
+
+        public LoginPage(MainWindow mainWindow)
         {
             InitializeComponent();
             IncorrectPasswordLable.Visibility = Visibility.Hidden;
+            this.mainWindow = mainWindow;
+            AccountManagerClass.tryToUseRecordedPassword(mainWindow);
         }
 
-        private TryEnterToSystem? tryToEnter = null; // нужно указать обработчик входа
+
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -39,16 +55,30 @@ namespace ELibraryProject
             if (tryToEnter is not null && tryToEnter(login, password) is true) // обязательно отделить проверку на null
             {
                 // переход на некст страницу с учетом данных логина и пароля
+                //  MessageBox.Show("Дальше должна быть загружена страница ЛК");
+                if(RememberCheckBox.IsChecked == true)
+                {
+                    AccountManagerClass.writeInfoToFile(login, password);
+                }
+                else
+                {
+                    AccountManagerClass.writeInfoToFile("", "");
+                }
+                
+                new UserWindow(login).Show();
+                mainWindow.Close();
+                
             }
             else
             {
-                IncorrectPasswordLable.Visibility = Visibility.Visible;
+                IncorrectPasswordLable.Visibility = Visibility.Visible; // неправильный логин или пароль
             }
         }
 
         private void ForgotPassword_Click(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new ForgotPasswordPage(this));
+            IncorrectPasswordLable.Visibility = Visibility.Hidden;
         }
 
 
