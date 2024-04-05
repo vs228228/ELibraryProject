@@ -199,7 +199,7 @@ namespace ELibraryProject.Classes
             sqlConnection.Open();
 
             // Запрос на сверку строки, котору вписал пользователь, с логином/почтой
-            string sqlExpression = $"SELECT CodeWordHint FROM UsersInfo WHERE Email = @email OR Login = @login";
+            string sqlExpression = $"SELECT CodeWordHint FROM Users WHERE Email = @email OR Login = @login";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@email", login);
@@ -224,7 +224,7 @@ namespace ELibraryProject.Classes
             sqlConnection.Open();
 
             // Запрос на сверку кодового слова
-            string sqlExpression = "SELECT Password FROM UsersInfo WHERE (Email = @email OR Login = @login)" +
+            string sqlExpression = "SELECT Password FROM Users WHERE (Email = @email OR Login = @login)" +
                 " and CodeWord = @codeword";
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@login", login);
@@ -254,7 +254,7 @@ namespace ELibraryProject.Classes
             sqlConnection.Open();
 
             // Запрос на смену(обновление) поля Password
-            string sqlExpression = "UPDATE UsersInfo SET Password = @password WHERE Email = @email or Login = @login";
+            string sqlExpression = "UPDATE Users SET Password = @password WHERE Email = @email or Login = @login";
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@password", password);
             command.Parameters.AddWithValue("@email", login);
@@ -311,7 +311,7 @@ namespace ELibraryProject.Classes
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
-            string sqlExpression = "SELECT Password FROM UsersInfo WHERE Email = @email or Login = @login";
+            string sqlExpression = "SELECT Password FROM Users WHERE Email = @email or Login = @login";
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@email", login);
             command.Parameters.AddWithValue("@login", login);
