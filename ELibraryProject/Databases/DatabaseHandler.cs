@@ -108,11 +108,39 @@ namespace ELibraryProject.Databases
             }
         }
 
+        public static void UpdateBook(Book book)
+        {
+            string sqlExpression = "UPDATE Books SET Title = @Title, Author = @Author, PageCount = @PageCount, Price = @Price, Count = @Count, " +
+                                   "PublicationDate = @PublicationDate, CoverType = @CoverType, Publisher = @Publisher, Description = @Description, " +
+                                   "PicturePath = @PicturePath, Category = @Category WHERE Id = @Id";
+
+            using (var connection = GetSqlConnection())
+            {
+                using (var command = new SqlCommand(sqlExpression, connection))
+                {
+                    command.Parameters.AddWithValue("@Title", book.Title);
+                    command.Parameters.AddWithValue("@Author", book.Author);
+                    command.Parameters.AddWithValue("@PageCount", book.PageCount);
+                    command.Parameters.AddWithValue("@Price", book.Price);
+                    command.Parameters.AddWithValue("@Count", book.Count);
+                    command.Parameters.AddWithValue("@PublicationDate", book.PublicationDate);
+                    command.Parameters.AddWithValue("@CoverType", book.CoverType);
+                    command.Parameters.AddWithValue("@Publisher", book.Publisher);
+                    command.Parameters.AddWithValue("@Description", book.Description);
+                    command.Parameters.AddWithValue("@PicturePath", book.PicturePath);
+                    command.Parameters.AddWithValue("@Category", book.Category);
+                    command.Parameters.AddWithValue("@Id", book.Id);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public static void DeleteBook(Book book)
         {
             SqlConnection sqlConnection = GetSqlConnection();
-            string sqlExpression =
-                "DELETE FROM Books WHERE Id = @Id";
+            string sqlExpression = "DELETE FROM Books WHERE Id = @Id";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@Id", book.Id);
