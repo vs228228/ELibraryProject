@@ -9,6 +9,10 @@ using System.Windows;
 using System.Configuration;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Windows.Forms;
+using System.IO;
+using System.Text.Json;
+using Microsoft.VisualBasic.Logging;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ELibraryProject.Classes
 {
@@ -19,21 +23,10 @@ namespace ELibraryProject.Classes
     internal static class AccountManagerClass
     {
        static SqlConnection? sqlConnection;
-        public static bool EnterToSystem(string login, string password)
+        public static bool TryEnterToSystem(string login, string password)
         {
-            
-            string? connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
 
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // 3 строки выше нужны т.к. у нас нет сервера и мы перекидываемся БД с одного ПК на другой
-            // Потому путь получаем вот таким путём
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
@@ -69,17 +62,7 @@ namespace ELibraryProject.Classes
                 return false;
             }
 
-            string? connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
-
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // строки выше создают строку подключения к БД
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
@@ -210,22 +193,13 @@ namespace ELibraryProject.Classes
 
         public static bool isUserExist(string login, out string? message)
         {
-            string? connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
 
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // строки выше создают строку подключения к БД
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
             // Запрос на сверку строки, котору вписал пользователь, с логином/почтой
-            string sqlExpression = $"SELECT CodeWordHint FROM Users WHERE Email = @email OR Login = @login";
+            string sqlExpression = $"SELECT CodeWordHint FROM UsersInfo WHERE Email = @email OR Login = @login";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@email", login);
@@ -245,22 +219,12 @@ namespace ELibraryProject.Classes
 
         public static bool isCodeWordRight(string codeWord, string login)
         {
-            string? connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
-
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // строки выше создают строку подключения к БД
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
             // Запрос на сверку кодового слова
-            string sqlExpression = "SELECT Password FROM Users WHERE (Email = @email OR Login = @login)" +
+            string sqlExpression = "SELECT Password FROM UsersInfo WHERE (Email = @email OR Login = @login)" +
                 " and CodeWord = @codeword";
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@login", login);
@@ -284,22 +248,13 @@ namespace ELibraryProject.Classes
                 msg = "Пароли не совпадают";
                 return false;
             }
-            string? connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
 
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // строки выше создают строку подключения к БД
-
+            string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
             // Запрос на смену(обновление) поля Password
-            string sqlExpression = "UPDATE Users SET Password = @password WHERE Email = @email or Login = @login";
+            string sqlExpression = "UPDATE UsersInfo SET Password = @password WHERE Email = @email or Login = @login";
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@password", password);
             command.Parameters.AddWithValue("@email", login);
@@ -313,6 +268,117 @@ namespace ELibraryProject.Classes
             }
             msg = "Неизвестная ошибка. Попробуйте ещё раз позже";
             return false;
+
+        }
+
+        async public static void tryToUseRecordedPassword(MainWindow mainWindow)
+        {
+            // создаю Пара/Ключ
+            string login;
+            KeyValuePair<string, string>? newPair;
+            using (FileStream fs = new FileStream("user.json", FileMode.OpenOrCreate))
+            {
+                // пытаюсь читать с файла
+                try
+                {
+                    newPair = await JsonSerializer.DeserializeAsync<KeyValuePair<string, string>>(fs);
+                    login = newPair.Value.Key;
+                    
+                    if(isHashEquals(login, newPair.Value.Value))
+                    {
+                        LoadAccount(login, mainWindow);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    // если была какая-то ошибка, то просто стираю файл дабы ошибки больше не было
+                    fs.Close();
+                    using(FileStream fs1 = new FileStream("user.json", FileMode.Truncate)) { 
+
+                    }
+                    return;
+                }
+                
+            }
+
+        }
+
+        private static bool isHashEquals(string login, string hash)
+        {
+            // Пока функция работает чисто на сравнивании строк, однако чуть позже нужно всё заменить на хэш
+            string connectionString = getConnectionString();
+
+            sqlConnection = new SqlConnection(connectionString);
+            sqlConnection.Open();
+
+            string sqlExpression = "SELECT Password FROM UsersInfo WHERE Email = @email or Login = @login";
+            SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
+            command.Parameters.AddWithValue("@email", login);
+            command.Parameters.AddWithValue("@login", login);
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            if (reader.Read())
+            {
+                string passwordHash = reader["Password"].ToString();
+                // после получения пароля сравнию этот пароль с тем, что лежит внутри json
+                // без substring не работает т.к. строка всегда 32 в размере
+                if (String.Compare(passwordHash.Substring(0, hash.Length), hash) == 0)
+                {
+                    sqlConnection.Close();
+                    reader.Close();
+                    return true;
+                }
+                sqlConnection.Close();
+                reader.Close();
+
+            }
+            return false;
+        }
+
+        private static void LoadAccount(string login, MainWindow mainWindow)
+        {
+            // попытка загрузить аккаунт
+            string question = "Войти в аккаунт " + login + "?";
+            string caption = "Вход в систему";
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            MessageBoxResult result = System.Windows.MessageBox.Show(question, caption, buttons);
+
+            if (result is MessageBoxResult.Yes)
+            {
+                new UserWindow(login).Show();
+                mainWindow.Close();
+            }
+        }
+
+        public static void writeInfoToFile(string login, string password)
+        {
+            using (FileStream fs = new FileStream("user.json", FileMode.Truncate)) ;
+
+            // запись в файл при правильном пароле
+            using (FileStream fs = new FileStream("user.json", FileMode.OpenOrCreate))
+            {
+                KeyValuePair<string, string> pair = new KeyValuePair<string, string>(login, password);
+                JsonSerializer.SerializeAsync(fs, pair);
+                Console.WriteLine("Data has been saved to file");
+            }
+        }
+
+        private static string getConnectionString()
+        {
+            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            if (connectionString == null)
+            {
+                throw new InvalidOperationException("Connection string is null");
+            }
+
+            connectionString = connectionString
+                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
+                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+            // 3 строки выше нужны т.к. у нас нет сервера и мы перекидываемся БД с одного ПК на другой
+            // Потому путь получаем вот таким путём
+
+            return connectionString;
         }
 
     }
