@@ -69,7 +69,7 @@ namespace ELibraryProject.Classes
 
         private string getConnectionString()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["Goods"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
             if (connectionString == null)
             {
                 throw new InvalidOperationException("Connection string is null");

@@ -97,7 +97,7 @@ namespace ELibraryProject.PersonalAccounts.Pages
             {
                 Title = title.Text,
                 Author = author.Text,
-                Price = Convert.ToDouble(price.Text),
+                Price = Convert.ToDecimal(price.Text),
                 Count = Convert.ToInt32(count.Text),
                 PublicationDate = Convert.ToInt16(writingDate.Text),
                 Description = description.Text,

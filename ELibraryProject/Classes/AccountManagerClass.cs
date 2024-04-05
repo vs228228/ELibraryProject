@@ -103,16 +103,16 @@ namespace ELibraryProject.Classes
                 return false;
             }
 
-            sqlExpression = "INSERT INTO Users (Login, Password, Email, Name, SecondName, " +
+            sqlExpression = "INSERT INTO Users (Login, Password, Email, FirstName, LastName, " +
                 "CodeWord, CodeWordHint) " +
-                "VALUES (@Login, @Password, @Email, @Name, @SecondName, @CodeWord, @CodeWordHint)";
+                "VALUES (@Login, @Password, @Email, @FirstName, @LastName, @CodeWord, @CodeWordHint)";
             command = new SqlCommand(sqlExpression, sqlConnection);
             command = new SqlCommand (sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@Login", login);
             command.Parameters.AddWithValue("@Password", password);
             command.Parameters.AddWithValue("@Email", email);
-            command.Parameters.AddWithValue("@Name", name);
-            command.Parameters.AddWithValue("@SecondName", secondName);
+            command.Parameters.AddWithValue("@FirstName", name);
+            command.Parameters.AddWithValue("@LastName", secondName);
             command.Parameters.AddWithValue("@CodeWord", codeWord);
             command.Parameters.AddWithValue("@CodeWordHint", tipToCodeWord);
 
@@ -366,7 +366,7 @@ namespace ELibraryProject.Classes
 
         private static string getConnectionString()
         {
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            string? connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
             if (connectionString == null)
             {
                 throw new InvalidOperationException("Connection string is null");

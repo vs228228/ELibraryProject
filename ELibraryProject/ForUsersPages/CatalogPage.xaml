@@ -7,13 +7,11 @@
       mc:Ignorable="d"
       Title="CatalogPage" Height="770" Width="860">
 
-
     <Grid Background="Wheat">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-
 
         <ScrollViewer Grid.Row="1" Width="840">
             <ItemsControl Name="BooksItemsControl">
@@ -32,7 +30,6 @@
                             </DockPanel>
                         </Button>
 
-                            </DockPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

@@ -9,6 +9,8 @@ namespace ELibraryProject.Classes
     internal class Book
     {
 
+        public Book() { }
+
         public Book(string Title, string Author, string Description, decimal price)
         {
             this.Title = Title;
