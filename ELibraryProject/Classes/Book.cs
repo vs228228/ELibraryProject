@@ -10,8 +10,14 @@ namespace ELibraryProject.Classes
     {
         public string Title { get; set; }
         public string Author { get; set; }
+        public short PageCount { get; set; }
+        public short PublicationDate { get; set; }
+        public string CoverType { get; set; }
+        public string Publisher { get; set; }
+        public string Description { get; set; }
         public double Price { get; set; }
         public int Count { get; set; }
-        public int WritingDate { get; set; }
+        public string PicturePath { get; set; }
+        public string Category { get; set; }
     }
 }

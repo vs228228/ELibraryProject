@@ -41,6 +41,7 @@ namespace ELibraryProject
 
         private void RebButton_Click(object sender, RoutedEventArgs e)
         {
+            
             string name = FirstNameTextBox.Text;
             string secondName = SecondNameTextBox.Text;
             string email = EmailTextBox.Text;

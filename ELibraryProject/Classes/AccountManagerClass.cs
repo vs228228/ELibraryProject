@@ -6,9 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Data;
 using System.Configuration;
-using Microsoft.Data.SqlClient;
 
 namespace ELibraryProject.Classes
 {
@@ -18,7 +16,7 @@ namespace ELibraryProject.Classes
         static public bool EnterToSystem(string login, string password)
         {
             
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            string? connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
             if (connectionString == null)
             {
                 throw new InvalidOperationException("Connection string is null");
@@ -31,7 +29,7 @@ namespace ELibraryProject.Classes
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
-            string sqlExpression = $"SELECT Login, Password FROM UsersInfo WHERE Login = @login AND Password = @password";
+            string sqlExpression = $"SELECT Login, Password FROM Users WHERE Login = @login AND Password = @password";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@login", login);
@@ -60,7 +58,7 @@ namespace ELibraryProject.Classes
                 return false;
             }
 
-            string? connectionString = ConfigurationManager.ConnectionStrings["UserInfo"].ConnectionString;
+            string? connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
             if (connectionString == null)
             {
                 throw new InvalidOperationException("Connection string is null");
@@ -73,7 +71,7 @@ namespace ELibraryProject.Classes
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
-            string sqlExpression = $"SELECT Email FROM UsersInfo WHERE Email = @email";
+            string sqlExpression = $"SELECT Email FROM Users WHERE Email = @email";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@email", email);
@@ -89,7 +87,7 @@ namespace ELibraryProject.Classes
 
             reader.Close();
 
-            sqlExpression = $"SELECT Login FROM UsersInfo WHERE Login = @login";
+            sqlExpression = $"SELECT Login FROM Users WHERE Login = @login";
             command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@login", login);
             reader = command.ExecuteReader();
@@ -110,7 +108,7 @@ namespace ELibraryProject.Classes
                 return false;
             }
 
-            sqlExpression = "INSERT INTO UsersInfo (Login, Password, Email, Name, SecondName, " +
+            sqlExpression = "INSERT INTO Users (Login, Password, Email, Name, SecondName, " +
                 "CodeWord, CodeWordHint) " +
                 "VALUES (@Login, @Password, @Email, @Name, @SecondName, @CodeWord, @CodeWordHint)";
             command = new SqlCommand(sqlExpression, sqlConnection);
