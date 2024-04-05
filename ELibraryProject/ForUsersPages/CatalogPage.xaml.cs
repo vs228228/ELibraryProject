@@ -25,12 +25,14 @@ namespace ELibraryProject.ForUsersPages
     {
         ObservableCollection<Book> books = new ObservableCollection<Book>();
         CatalogManager catalogManager = new CatalogManager();
+        string login;
 
-        public CatalogPage()
+        public CatalogPage(string login)
         {
             InitializeComponent();
             books = catalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = books;
+            this.login = login;
             
         }
 

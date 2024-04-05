@@ -19,6 +19,8 @@ using System.Configuration;
 using Microsoft.Data.SqlClient;
 using ELibraryProject.Classes;
 using ELibraryProject.AuthenticationPages;
+using System.IO;
+using System.Text.Json;
 
 
 namespace ELibraryProject
@@ -33,7 +35,7 @@ namespace ELibraryProject
     {
 
      //   private SqlConnection? sqlConnection;
-        private TryEnterToSystem? tryToEnter = AccountManagerClass.EnterToSystem; // нужно указать обработчик входа
+        private TryEnterToSystem? tryToEnter = AccountManagerClass.TryEnterToSystem; // нужно указать обработчик входа
         MainWindow mainWindow;
 
         public LoginPage(MainWindow mainWindow)
@@ -41,9 +43,10 @@ namespace ELibraryProject
             InitializeComponent();
             IncorrectPasswordLable.Visibility = Visibility.Hidden;
             this.mainWindow = mainWindow;
+            AccountManagerClass.tryToUseRecordedPassword(mainWindow);
         }
 
-        
+
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -52,8 +55,17 @@ namespace ELibraryProject
             if (tryToEnter is not null && tryToEnter(login, password) is true) // обязательно отделить проверку на null
             {
                 // переход на некст страницу с учетом данных логина и пароля
-              //  MessageBox.Show("Дальше должна быть загружена страница ЛК");
-                new UserWindow().Show();
+                //  MessageBox.Show("Дальше должна быть загружена страница ЛК");
+                if(RememberCheckBox.IsChecked == true)
+                {
+                    AccountManagerClass.writeInfoToFile(login, password);
+                }
+                else
+                {
+                    AccountManagerClass.writeInfoToFile("", "");
+                }
+                
+                new UserWindow(login).Show();
                 mainWindow.Close();
                 
             }
