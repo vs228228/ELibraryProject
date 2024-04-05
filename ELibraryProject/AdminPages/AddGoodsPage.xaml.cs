@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -13,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-//using System.Windows.Shapes;
 using System.Configuration;
 using Microsoft.Win32;
 using System.IO;
@@ -86,7 +84,7 @@ namespace ELibraryProject.PersonalAccounts.Pages
 			image.Source = bitmapImage;
 			string newPicturePath = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\net8.0-windows\\", "");
 
-			using (FileStream fs = new FileStream(Path.Combine(newPicturePath, $"Pictures\\{title.Text}-{author.Text}.jpeg"), FileMode.Create))
+			using (FileStream fs = new FileStream(Path.Combine(newPicturePath, $"Databases\\Pictures\\{title.Text}-{author.Text}.jpeg"), FileMode.Create))
 			{
 				JpegBitmapEncoder encoder = new JpegBitmapEncoder();
 				encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
