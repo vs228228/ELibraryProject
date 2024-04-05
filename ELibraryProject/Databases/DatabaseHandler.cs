@@ -47,45 +47,75 @@ namespace ELibraryProject.Databases
             return sqlConnection;
         }
 
-        //public static List<Book> GetBooks()
-        //{
-        //    SqlConnection? sqlConnection;
-        //    string connectionString = ConfigurationManager.ConnectionStrings["Goods"].ConnectionString;
-        //    if (connectionString == null)
-        //    {
-        //        throw new InvalidOperationException("Connection string is null");
-        //    }
+        public static List<Book> GetBooks()
+        {
+            List<Book> books = new List<Book>();
+            
 
-        //    connectionString = connectionString
-        //        .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-        //        .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
+            using (var connection = GetSqlConnection())
+            {
+                string sqlExpression = "SELECT * FROM Books";
+                using var command = new SqlCommand(sqlExpression, connection);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Book book = new()
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Title = reader["Title"].ToString(),
+                        Author = reader["Author"].ToString(),
+                        PageCount = Convert.ToInt16(reader["PageCount"]),
+                        Price = Convert.ToDecimal(reader["Price"]),
+                        Count = Convert.ToInt32(reader["Count"]),
+                        PublicationDate = Convert.ToInt16(reader["PublicationDate"]),
+                        CoverType = reader["CoverType"].ToString(),
+                        Publisher = reader["Publisher"].ToString(),
+                        Description = reader["Description"].ToString(),
+                        PicturePath = reader["PicturePath"].ToString(),
+                        Category = reader["Category"].ToString()
+                    };
+                    books.Add(book);
+                }
+            }
 
-        //    sqlConnection = new SqlConnection(connectionString);
-
-        //    return " ";
-        //}
+            return books;
+        }
 
         public static void AddBook(Book book)
+
+        {
+            string sqlExpression = "INSERT INTO Books (Title, Author, PageCount, Price, Count, PublicationDate, CoverType, Publisher, Description, PicturePath, Category) " +
+                       "VALUES (@Title, @Author, @PageCount, @Price, @Count, @PublicationDate, @CoverType, @Publisher, @Description, @PicturePath, @Category)";
+
+            using (var connection = GetSqlConnection())
+            {
+                using (var command = new SqlCommand(sqlExpression, connection))
+                {
+                    command.Parameters.AddWithValue("@Title", book.Title);
+                    command.Parameters.AddWithValue("@Author", book.Author);
+                    command.Parameters.AddWithValue("@PageCount", book.PageCount);
+                    command.Parameters.AddWithValue("@Price", book.Price);
+                    command.Parameters.AddWithValue("@Count", book.Count);
+                    command.Parameters.AddWithValue("@PublicationDate", book.PublicationDate);
+                    command.Parameters.AddWithValue("@CoverType", book.CoverType);
+                    command.Parameters.AddWithValue("@Publisher", book.Publisher);
+                    command.Parameters.AddWithValue("@Description", book.Description);
+                    command.Parameters.AddWithValue("@PicturePath", book.PicturePath);
+                    command.Parameters.AddWithValue("@Category", book.Category);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteBook(Book book)
         {
             SqlConnection sqlConnection = GetSqlConnection();
-
             string sqlExpression =
-                "INSERT INTO Books (Title, Author, PageCount, " +
-                "Price, Count, PublicationDate, CoverType, Publisher, " +
-                "Description, PicturePath, Category) " +
-                $"VALUES ('{book.Title}', " +
-                $"'{book.Author}', " +
-                $"{book.PageCount}, " +
-                $"{book.Price}, " +
-                $"{book.Count}, " +
-                $"{book.PublicationDate}, " +
-                $"'{book.CoverType}', " +
-                $"'{book.Publisher}', " +
-                $"'{book.Description}', " +
-                $"'{book.PicturePath}', " +
-                $"'{book.Category}')";
+                "DELETE FROM Books WHERE Id = @Id";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
+            command.Parameters.AddWithValue("@Id", book.Id);
             command.ExecuteNonQuery();
             sqlConnection.Close();
         }

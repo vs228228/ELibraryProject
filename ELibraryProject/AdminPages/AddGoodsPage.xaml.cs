@@ -18,7 +18,7 @@ using System.IO;
 using ELibraryProject.Classes;
 using ELibraryProject.Databases;
 
-namespace ELibraryProject.PersonalAccounts.Pages
+namespace ELibraryProject.AdminPages.Pages
 {
 	/// <summary>
 	/// Логика взаимодействия для AddGoodsPage.xaml
@@ -82,16 +82,19 @@ namespace ELibraryProject.PersonalAccounts.Pages
 			Uri fileUri = new Uri(openFileDialog.FileName);
 			var bitmapImage = new BitmapImage(fileUri);
 			image.Source = bitmapImage;
-			string newPicturePath = AppDomain.CurrentDomain.BaseDirectory.Replace("\\bin\\Debug\\net8.0-windows\\", "");
 
-			using (FileStream fs = new FileStream(Path.Combine(newPicturePath, $"Databases\\Pictures\\{title.Text}-{author.Text}.jpeg"), FileMode.Create))
+            
+            string newPicturePath = Path.Combine("{AppDir}", $"Databases\\Pictures\\{title.Text}-{author.Text}.jpeg");
+
+            using (FileStream fs = new FileStream(newPicturePath.Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
+                .Replace("\\bin\\Debug\\net8.0-windows\\", ""), FileMode.Create))
 			{
 				JpegBitmapEncoder encoder = new JpegBitmapEncoder();
 				encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
 				encoder.Save(fs);
 			}
 
-            Book newBook = new Book()
+            Book newBook = new Book
             {
                 Title = title.Text,
                 Author = author.Text,
