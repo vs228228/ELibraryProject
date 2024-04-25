@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ELibraryProject.Classes
 {
-    internal class Book
+    public class Book
     {
 
         public Book() { }
