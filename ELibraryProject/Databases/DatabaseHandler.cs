@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 
 namespace ELibraryProject.Databases
 {
@@ -131,12 +132,12 @@ namespace ELibraryProject.Databases
                     command.Parameters.AddWithValue("@Category", book.Category);
                     command.Parameters.AddWithValue("@Id", book.Id);
 
-                    connection.Open();
                     command.ExecuteNonQuery();
                 }
             }
         }
 
+        // Пока не тестил, может не работать
         public static void DeleteBook(Book book)
         {
             SqlConnection sqlConnection = GetSqlConnection();
@@ -146,6 +147,8 @@ namespace ELibraryProject.Databases
             command.Parameters.AddWithValue("@Id", book.Id);
             command.ExecuteNonQuery();
             sqlConnection.Close();
+
+            File.Delete(book.PicturePath);
         }
     }
 }
