@@ -77,6 +77,7 @@ namespace ELibraryProject.Databases
                     };
                     books.Add(book);
                 }
+                connection.Close();
             }
 
             return books;
@@ -105,6 +106,7 @@ namespace ELibraryProject.Databases
                     command.Parameters.AddWithValue("@Category", book.Category);
 
                     command.ExecuteNonQuery();
+                    connection.Close();
                 }
             }
         }
@@ -133,6 +135,7 @@ namespace ELibraryProject.Databases
                     command.Parameters.AddWithValue("@Id", book.Id);
 
                     command.ExecuteNonQuery();
+                    connection.Close();
                 }
             }
         }
@@ -155,7 +158,6 @@ namespace ELibraryProject.Databases
         {
             List<User> users = new List<User>();
 
-
             using (var connection = GetSqlConnection())
             {
                 string sqlExpression = "SELECT * FROM Users";
@@ -177,11 +179,11 @@ namespace ELibraryProject.Databases
                     };
                     users.Add(user);
                 }
+                connection.Close();
             }
         }
 
         public static void AddUser(User user)
-
         {
             string sqlExpression = "INSERT INTO Books (Login, Password, Email, FirstName, LastName, CodeWord, TipToCodeWord, IsAdmin) " +
                        "VALUES (@Login, @Password, @Email, @FirstName, @LastName, @CodeWord, @TipToCodeWord, @IsAdmin)";
@@ -200,8 +202,59 @@ namespace ELibraryProject.Databases
                     command.Parameters.AddWithValue("@IsAdmin", user.IsAdmin);
 
                     command.ExecuteNonQuery();
+                    connection.Close();
                 }
             }
+        }
+
+        public static void AddOrder(Order order)
+        {
+            string sqlExpression = "INSERT INTO Orders (UserId, BookId, Number, OrderDate, ApprovalDate, CancellationDate, IsComplete) " +
+                       "VALUES (@UserId, @BookId, @Number, @OrderDate, @ApprovalDate, @CancellationDate, @IsComplete)";
+
+            using (var connection = GetSqlConnection())
+            {
+                using (var command = new SqlCommand(sqlExpression, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", order.UserId);
+                    command.Parameters.AddWithValue("@BookId", order.BookId);
+                    command.Parameters.AddWithValue("@Number", order.Number);
+                    command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+                    command.Parameters.AddWithValue("@ApprovalDate", order.ApprovalDate);
+                    command.Parameters.AddWithValue("@CancellationDate", order.CancellationDate);
+                    command.Parameters.AddWithValue("@IsComplete", order.IsComplete);
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+        }
+
+        public static List<Order> GetOrders()
+        {
+            List<Order> orders = new();
+            using (var connection = GetSqlConnection())
+            {
+                string sqlExpression = "SELECT * FROM Orders";
+                using var command = new SqlCommand(sqlExpression, connection);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Order order = new()
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        UserId = Convert.ToInt32(reader["UserId"]),
+                        BookId = Convert.ToInt32(reader["BookId"]),
+                        Number = Convert.ToInt32(reader["Number"]),
+                        OrderDate = Convert.ToDateTime(reader["OrderDate"]),
+                        ApprovalDate = Convert.ToDateTime(reader["OrderDate"]),
+                        CancellationDate = Convert.ToDateTime(reader["OrderDate"]),
+                        IsComplete = Convert.ToBoolean(reader["IsComplete"])
+                    };
+                    orders.Add(order);
+                }
+                connection.Close();
+            }
+            return orders;
         }
     }
 }
