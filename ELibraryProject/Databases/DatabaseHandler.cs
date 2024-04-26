@@ -150,5 +150,58 @@ namespace ELibraryProject.Databases
 
             File.Delete(book.PicturePath);
         }
+
+        public static void GetUsers()
+        {
+            List<User> users = new List<User>();
+
+
+            using (var connection = GetSqlConnection())
+            {
+                string sqlExpression = "SELECT * FROM Users";
+                using var command = new SqlCommand(sqlExpression, connection);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    User user = new()
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Login = reader["Login"].ToString(),
+                        Password = reader["Password"].ToString(),
+                        Email = reader["Email"].ToString(),
+                        FirstName = reader["FirstName"].ToString(),
+                        LastName = reader["LastName"].ToString(),
+                        CodeWord = reader["CodeWord"].ToString(),
+                        TipToCodeWord = reader["CodeWordHint"].ToString(),
+                        IsAdmin = Convert.ToBoolean(reader["IsAdmin"])
+                    };
+                    users.Add(user);
+                }
+            }
+        }
+
+        public static void AddUser(User user)
+
+        {
+            string sqlExpression = "INSERT INTO Books (Login, Password, Email, FirstName, LastName, CodeWord, TipToCodeWord, IsAdmin) " +
+                       "VALUES (@Login, @Password, @Email, @FirstName, @LastName, @CodeWord, @TipToCodeWord, @IsAdmin)";
+
+            using (var connection = GetSqlConnection())
+            {
+                using (var command = new SqlCommand(sqlExpression, connection))
+                {
+                    command.Parameters.AddWithValue("@Login", user.Login);
+                    command.Parameters.AddWithValue("@Password", user.Password);
+                    command.Parameters.AddWithValue("@Email", user.Email);
+                    command.Parameters.AddWithValue("@FirstName", user.FirstName);
+                    command.Parameters.AddWithValue("@LastName", user.LastName);
+                    command.Parameters.AddWithValue("@CodeWord", user.CodeWord);
+                    command.Parameters.AddWithValue("@TipToCodeWord", user.TipToCodeWord);
+                    command.Parameters.AddWithValue("@IsAdmin", user.IsAdmin);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
