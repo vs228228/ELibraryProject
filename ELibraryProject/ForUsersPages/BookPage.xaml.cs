@@ -24,21 +24,36 @@ namespace ELibraryProject.ForUsersPages
         CatalogManager manager = new CatalogManager();
         Book book;
         CatalogPage catalogPage;
-        public BookPage(string TitleAndAuthor, CatalogPage catalogPage)
+        AboutPage aboutPage;
+        string login;
+
+        public BookPage(string TitleAndAuthor, CatalogPage catalogPage, AboutPage aboutPage, string login)
         {
             InitializeComponent();
             book = manager.GetCertainBook(TitleAndAuthor);
             BookTitle.Text = book.Title;
             BookAuthor.Text = book.Author;
             BookPrice.Text = "Цена: " + Math.Round(book.Price, 2);
-            // BookDescription.Text = "Описание: " + book.Description;
+            BookDescription.Text = "Описание: " + book.Description;
 
             this.catalogPage = catalogPage;
+            this.aboutPage = aboutPage;
+            this.login = login;
         }
 
         private void ReturnToCatalog(object  sender, EventArgs e)
         {
             NavigationService.Navigate(catalogPage);
+        }
+
+        private void LoadAboutPage(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(aboutPage);
+        }
+
+        private void LoadPersonalAccountPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new PersonalAccountPage(catalogPage, aboutPage, login));
         }
     }
 }

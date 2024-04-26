@@ -20,13 +20,13 @@
         <Label x:Name="PhoneNubmerLable" Content="+375*********" HorizontalAlignment="Left" Margin="373,34,0,0" VerticalAlignment="Top" FontFamily="Tempus Sans ITC" FontSize="15" Grid.RowSpan="2"/>
         <Label x:Name="AboutUsLable" HorizontalAlignment="Left" Margin="603,12,0,0" VerticalAlignment="Top" Width="86" FontSize="14" Height="32"
          Cursor="Hand">
-            <Hyperlink x:Name="AboutUsHyper" Foreground="Black" TextDecorations="None">
+            <Hyperlink x:Name="AboutUsHyper" Foreground="Black" TextDecorations="None" Click="LoadAboutPage">
                 <Run Text="О магазине"/>
             </Hyperlink>
         </Label>
         <Label x:Name="PersonalAreaLable" HorizontalAlignment="Left" Margin="713,12,0,0" VerticalAlignment="Top" Width="118" FontSize="14" Height="32"
          Cursor="Hand">
-            <Hyperlink x:Name="PersonalAreaHyper" Foreground="Black" TextDecorations="None">
+            <Hyperlink x:Name="PersonalAreaHyper" Foreground="Black" TextDecorations="None" Click="LoadPersonalAccountPage">
                 <Run Text="Личный кабинет"/>
             </Hyperlink>
         </Label>

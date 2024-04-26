@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ELibraryProject.ForUsersPages
 {
@@ -25,6 +27,8 @@ namespace ELibraryProject.ForUsersPages
     {
         ObservableCollection<Book> books = new ObservableCollection<Book>();
         CatalogManager catalogManager = new CatalogManager();
+        AboutPage aboutPage;
+        PersonalAccountPage personalAccountPage;
         string login;
 
         public CatalogPage(string login)
@@ -33,6 +37,8 @@ namespace ELibraryProject.ForUsersPages
             books = catalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = books;
             this.login = login;
+            aboutPage = new AboutPage(this, login);
+            personalAccountPage = new PersonalAccountPage(this, aboutPage, login);
             
         }
 
@@ -47,8 +53,18 @@ namespace ELibraryProject.ForUsersPages
             {
                 // Теперь есть доступ к TextBlock и его свойствам
                 string text = textBlock.Text;
-                NavigationService.Navigate(new BookPage(text, this));
+                NavigationService.Navigate(new BookPage(text, this,this.aboutPage, this.login));
             }
+        }
+
+        private void LoadAboutPage(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(aboutPage);
+        }
+
+        private void LoadPersonalAccountPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new PersonalAccountPage(this, aboutPage, login));
         }
     }
 

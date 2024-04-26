@@ -36,7 +36,7 @@ namespace ELibraryProject.Classes
 
             while (reader.Read())
             {
-                Book book = new Book(reader["Title"].ToString(), reader["Author"].ToString(), (decimal)reader["Price"]);
+                Book book = new Book(reader["Title"].ToString(), reader["Author"].ToString(), reader["Description"].ToString(), (decimal)reader["Price"]);
 
                 books.Add(book);
                 
@@ -61,7 +61,7 @@ namespace ELibraryProject.Classes
             SqlDataReader reader = command.ExecuteReader();
 
             reader.Read();
-            Book book = new Book(reader["Title"].ToString(), reader["Author"].ToString(), (decimal)reader["Price"]);
+            Book book = new Book(reader["Title"].ToString(), reader["Author"].ToString(), reader["Description"].ToString(), (decimal)reader["Price"]);
 
             return book;
 
