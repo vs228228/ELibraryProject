@@ -84,7 +84,6 @@ namespace ELibraryProject.Databases
         }
 
         public static void AddBook(Book book)
-
         {
             string sqlExpression = "INSERT INTO Books (Title, Author, PageCount, Price, Count, PublicationDate, CoverType, Publisher, Description, PicturePath, Category) " +
                        "VALUES (@Title, @Author, @PageCount, @Price, @Count, @PublicationDate, @CoverType, @Publisher, @Description, @PicturePath, @Category)";
@@ -140,7 +139,6 @@ namespace ELibraryProject.Databases
             }
         }
 
-        // Пока не тестил, может не работать
         public static void DeleteBook(Book book)
         {
             SqlConnection sqlConnection = GetSqlConnection();
@@ -220,9 +218,32 @@ namespace ELibraryProject.Databases
                     command.Parameters.AddWithValue("@BookId", order.BookId);
                     command.Parameters.AddWithValue("@Number", order.Number);
                     command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
-                    command.Parameters.AddWithValue("@ApprovalDate", order.ApprovalDate);
-                    command.Parameters.AddWithValue("@CancellationDate", order.CancellationDate);
+                    command.Parameters.AddWithValue("@ApprovalDate", (object?)order.ApprovalDate ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@CancellationDate", (object?)order.CancellationDate ?? DBNull.Value);
                     command.Parameters.AddWithValue("@IsComplete", order.IsComplete);
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+        }
+
+        public static void UpdateOrder(Order order)
+        {
+            string sqlExpression = "UPDATE Orders SET UserId = @UserId, BookId = @BookId, Number = @Number, " +
+                "OrderDate = @OrderDate, ApprovalDate = @ApprovalDate, CancellationDate = @CancellationDate " +
+                "WHERE Id = @Id";
+            using (var connection = GetSqlConnection())
+            {
+                using (var command = new SqlCommand(sqlExpression, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", order.UserId);
+                    command.Parameters.AddWithValue("@BookId", order.BookId);
+                    command.Parameters.AddWithValue("@Number", order.Number);
+                    command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
+                    command.Parameters.AddWithValue("@ApprovalDate", (object?)order.ApprovalDate ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@CancellationDate", (object?)order.CancellationDate ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Id", order.Id);
+
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
@@ -246,8 +267,8 @@ namespace ELibraryProject.Databases
                         BookId = Convert.ToInt32(reader["BookId"]),
                         Number = Convert.ToInt32(reader["Number"]),
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
-                        ApprovalDate = Convert.ToDateTime(reader["OrderDate"]),
-                        CancellationDate = Convert.ToDateTime(reader["OrderDate"]),
+                        ApprovalDate = reader["ApprovalDate"] != DBNull.Value ? Convert.ToDateTime(reader["ApprovalDate"]) : null,
+                        CancellationDate = reader["CancellationDate"] != DBNull.Value ? Convert.ToDateTime(reader["CancellationDate"]) : null,
                         IsComplete = Convert.ToBoolean(reader["IsComplete"])
                     };
                     orders.Add(order);
