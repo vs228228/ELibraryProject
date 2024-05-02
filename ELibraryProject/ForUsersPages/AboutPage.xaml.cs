@@ -23,12 +23,10 @@ namespace ELibraryProject.ForUsersPages
     public partial class AboutPage : Page
     {
         CatalogPage catalogPage;
-        string login;
-        public AboutPage( CatalogPage catalogPage, string login)
+        public AboutPage( CatalogPage catalogPage)
         {
             InitializeComponent();
             this.catalogPage = catalogPage;
-            this.login = login;
         }
 
         private void ReturnToCatalog(object sender, EventArgs e)
@@ -38,7 +36,7 @@ namespace ELibraryProject.ForUsersPages
 
         private void LoadPersonalAccountPage(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new PersonalAccountPage(catalogPage, this, login));
+            NavigationService.Navigate(new PersonalAccountPage(catalogPage, this));
         }
     }
 }

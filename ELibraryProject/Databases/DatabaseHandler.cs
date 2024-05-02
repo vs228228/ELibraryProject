@@ -277,5 +277,40 @@ namespace ELibraryProject.Databases
             }
             return orders;
         }
+
+        public static User GetUserByLogin(string login)
+        {
+            User user;
+
+            using (var connection = GetSqlConnection())
+            {
+                string sqlExpression = "SELECT * FROM Users WHERE Login = @login";
+                using (var command = new SqlCommand(sqlExpression, connection))
+                {
+                    command.Parameters.AddWithValue("@login", login);
+
+                    using var reader = command.ExecuteReader();
+                    reader.Read();
+                    user = new()
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Login = Convert.ToString(reader["Login"]),
+                        Password = Convert.ToString(reader["Password"]),
+                        Email = Convert.ToString(reader["Email"]),
+                        FirstName = Convert.ToString(reader["FirstName"]),
+                        LastName = Convert.ToString(reader["LastName"]),
+                        CodeWord = Convert.ToString(reader["CodeWord"]),
+                        TipToCodeWord = Convert.ToString(reader["CodeWordHint"]),
+                        IsAdmin = Convert.ToBoolean(reader["isAdmin"])
+                    };
+
+                    connection.Close();
+                }
+                
+                
+            }
+
+            return user;
+        }
     }
 }

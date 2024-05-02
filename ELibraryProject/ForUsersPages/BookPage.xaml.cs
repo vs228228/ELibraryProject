@@ -25,9 +25,8 @@ namespace ELibraryProject.ForUsersPages
         Book book;
         CatalogPage catalogPage;
         AboutPage aboutPage;
-        string login;
 
-        public BookPage(string TitleAndAuthor, CatalogPage catalogPage, AboutPage aboutPage, string login)
+        public BookPage(string TitleAndAuthor, CatalogPage catalogPage, AboutPage aboutPage)
         {
             InitializeComponent();
             book = manager.GetCertainBook(TitleAndAuthor);
@@ -38,7 +37,6 @@ namespace ELibraryProject.ForUsersPages
 
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
-            this.login = login;
         }
 
         private void ReturnToCatalog(object  sender, EventArgs e)
@@ -53,7 +51,7 @@ namespace ELibraryProject.ForUsersPages
 
         private void LoadPersonalAccountPage(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new PersonalAccountPage(catalogPage, aboutPage, login));
+            NavigationService.Navigate(new PersonalAccountPage(catalogPage, aboutPage));
         }
     }
 }

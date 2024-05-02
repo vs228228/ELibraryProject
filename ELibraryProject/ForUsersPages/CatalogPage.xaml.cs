@@ -1,4 +1,5 @@
 ﻿using ELibraryProject.Classes;
+using ELibraryProject.Databases;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,8 +38,10 @@ namespace ELibraryProject.ForUsersPages
             books = catalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = books;
             this.login = login;
-            aboutPage = new AboutPage(this, login);
-            personalAccountPage = new PersonalAccountPage(this, aboutPage, login);
+            aboutPage = new AboutPage(this);
+            personalAccountPage = new PersonalAccountPage(this, aboutPage);
+            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
+            MessageBox.Show($"Добро пожаловать, {UserContext.CurrentUser.FirstName}!");
             
         }
 
@@ -53,7 +56,7 @@ namespace ELibraryProject.ForUsersPages
             {
                 // Теперь есть доступ к TextBlock и его свойствам
                 string text = textBlock.Text;
-                NavigationService.Navigate(new BookPage(text, this,this.aboutPage, this.login));
+                NavigationService.Navigate(new BookPage(text, this,this.aboutPage));
             }
         }
 
@@ -64,7 +67,7 @@ namespace ELibraryProject.ForUsersPages
 
         private void LoadPersonalAccountPage(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new PersonalAccountPage(this, aboutPage, login));
+            NavigationService.Navigate(new PersonalAccountPage(this, aboutPage));
         }
     }
 

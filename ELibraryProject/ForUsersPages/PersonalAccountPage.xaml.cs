@@ -23,13 +23,11 @@ namespace ELibraryProject.ForUsersPages
     {
         CatalogPage catalogPage;
         AboutPage aboutPage;
-        string login;
-        public PersonalAccountPage(CatalogPage catalogPage, AboutPage aboutPage, string login)
+        public PersonalAccountPage(CatalogPage catalogPage, AboutPage aboutPage)
         {
             InitializeComponent();
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
-            this.login = login;
         }
 
         private void ReturnToCatalog(object sender, EventArgs e)
