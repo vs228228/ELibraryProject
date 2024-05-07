@@ -4,6 +4,17 @@
              xmlns:local="clr-namespace:ELibraryProject"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Page">
+            <Setter Property="Background" Value="Wheat"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="TabControl">
+            <Setter Property="Background" Value="Wheat"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="Background" Value="Wheat"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
     </Application.Resources>
 </Application>

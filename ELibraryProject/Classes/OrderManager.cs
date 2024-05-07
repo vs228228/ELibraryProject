@@ -1,4 +1,4 @@
-﻿using ELibraryProject.Databases;
+﻿using ELibraryProject.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace ELibraryProject.Classes
         {
             var order = new Order
             {
-                UserId = UserContext.CurrentUser.Id,
+                UserId = 5,
                 BookId = book.Id,
                 Number = number,
                 OrderDate = DateTime.Now,
@@ -25,7 +25,53 @@ namespace ELibraryProject.Classes
         public static void ApproveOrder(Order order)
         {
             order.ApprovalDate = DateTime.Now;
+            DatabaseHandler.UpdateOrder(order);
+        }
 
+        public static List<OrderView> GetOrderViewList()
+        {
+            var list = new List<OrderView>();
+            var orders = DatabaseHandler.GetOrders();
+            var books = DatabaseHandler.GetBooks();
+            var users = DatabaseHandler.GetUsers();
+
+            foreach (var order in orders )
+            {
+                var user = users.FirstOrDefault(u => u.Id == order.UserId);
+                var book = books.FirstOrDefault(b => b.Id == order.BookId);
+                list.Add(new OrderView
+                {
+                    OrderId = (int)order.Id,
+                    User = user.FirstName + " " + user.LastName,
+                    Book = book.Title + " " + book.Author,
+                    Number = order.Number
+                });
+            }
+
+            return list;
+        }
+
+        public static List<OrderView> GetUnapprovedOrderViewList()
+        {
+            var list = new List<OrderView>();
+            var orders = DatabaseHandler.GetUnapprovedOrders();
+            var books = DatabaseHandler.GetBooks();
+            var users = DatabaseHandler.GetUsers();
+
+            foreach (var order in orders)
+            {
+                var user = users.FirstOrDefault(u => u.Id == order.UserId);
+                var book = books.FirstOrDefault(b => b.Id == order.BookId);
+                list.Add(new OrderView
+                {
+                    OrderId = (int)order.Id,
+                    User = user.FirstName + " " + user.LastName,
+                    Book = book.Title + " " + book.Author,
+                    Number = order.Number
+                });
+            }
+
+            return list;
         }
     }
 }
