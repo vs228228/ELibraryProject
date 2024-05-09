@@ -26,16 +26,16 @@ namespace ELibraryProject.ForUsersPages
     /// 
     public partial class CatalogPage : Page
     {
-        ObservableCollection<BookView> books = new ObservableCollection<BookView>();
-        CatalogManager catalogManager = new CatalogManager();
-        AboutPage aboutPage;
-        PersonalAccountPage personalAccountPage;
+        private ObservableCollection<BookView> allBooks;
+        private ObservableCollection<BookView> searchedBooks;
+        private AboutPage aboutPage;
+        private PersonalAccountPage personalAccountPage;
 
         public CatalogPage(string login)
         {
             InitializeComponent();
-            books = catalogManager.LoadBooks();
-            BooksItemsControl.ItemsSource = books;
+            allBooks = CatalogManager.LoadBooks();
+            BooksItemsControl.ItemsSource = allBooks;
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
             UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
@@ -66,6 +66,11 @@ namespace ELibraryProject.ForUsersPages
         {
             NavigationService.Navigate(new PersonalAccountPage(this, aboutPage));
         }
-    }
 
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = searchTextBox.Text;
+            BooksItemsControl.ItemsSource = new ObservableCollection<BookView>(allBooks.Where(p => p.TitleAndAuthor.Contains(searchText)));
+        }
+    }
 }

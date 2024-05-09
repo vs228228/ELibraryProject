@@ -21,7 +21,6 @@ namespace ELibraryProject.ForUsersPages
     /// </summary>
     public partial class BookPage : Page
     {
-        CatalogManager manager = new CatalogManager();
         BookView book;
         CatalogPage catalogPage;
         AboutPage aboutPage;
@@ -29,7 +28,7 @@ namespace ELibraryProject.ForUsersPages
         public BookPage(string TitleAndAuthor, CatalogPage catalogPage, AboutPage aboutPage)
         {
             InitializeComponent();
-            book = manager.GetCertainBook(TitleAndAuthor);
+            book = CatalogManager.GetCertainBook(TitleAndAuthor);
             BookTitle.Text = book.Title;
             BookAuthor.Text = book.Author;
             BookPrice.Text = "Цена: " + Math.Round(book.Price, 2);
