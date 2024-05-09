@@ -20,13 +20,13 @@
         <Label x:Name="PhoneNubmerLable" Content="+375*********" HorizontalAlignment="Left" Margin="373,34,0,0" VerticalAlignment="Top" FontFamily="Tempus Sans ITC" FontSize="15" Grid.RowSpan="2"/>
         <Label x:Name="AboutUsLable" HorizontalAlignment="Left" Margin="603,12,0,0" VerticalAlignment="Top" Width="86" FontSize="14" Height="32"
          Cursor="Hand">
-            <Hyperlink x:Name="AboutUsHyper" Foreground="Black" TextDecorations="None">
+            <Hyperlink x:Name="AboutUsHyper" Foreground="Black" TextDecorations="None" Click="LoadAboutPage">
                 <Run Text="О магазине"/>
             </Hyperlink>
         </Label>
         <Label x:Name="PersonalAreaLable" HorizontalAlignment="Left" Margin="713,12,0,0" VerticalAlignment="Top" Width="118" FontSize="14" Height="32"
          Cursor="Hand">
-            <Hyperlink x:Name="PersonalAreaHyper" Foreground="Black" TextDecorations="None">
+            <Hyperlink x:Name="PersonalAreaHyper" Foreground="Black" TextDecorations="None" Click="LoadPersonalAccountPage">
                 <Run Text="Личный кабинет"/>
             </Hyperlink>
         </Label>
@@ -36,12 +36,13 @@
                 <Run Text="Каталог"/>
             </Hyperlink>
         </Label>
-        <Image HorizontalAlignment="Left" Height="422" Margin="1,2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="479" Source="C:\Users\Ваня\Desktop\nastol.com.ua-9967.jpg"
+        <Image Name="img" HorizontalAlignment="Left" Height="422" Margin="1,2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="479" 
                Stretch="Fill"/>
         <TextBlock x:Name="BookTitle" HorizontalAlignment="Left" Margin="497,22,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="26" Height="66" Width="353"/>
         <TextBlock x:Name="BookAuthor" HorizontalAlignment="Left" Margin="497,98,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="66" Width="353"/>
         <TextBlock x:Name="BookPrice" HorizontalAlignment="Left" Margin="497,178,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="66" Width="353"/>
         <TextBlock x:Name="BookDescription" HorizontalAlignment="Center" Margin="0,451,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="249" Width="839"/>
+        <Button Content="Купить" HorizontalAlignment="Left" Margin="498,269,0,0" Grid.Row="1" VerticalAlignment="Top" Height="56" Width="148" FontSize="20" Click="Button_Click"/>
 
     </Grid>
 </Page>

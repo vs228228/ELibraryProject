@@ -22,23 +22,43 @@ namespace ELibraryProject.ForUsersPages
     public partial class BookPage : Page
     {
         CatalogManager manager = new CatalogManager();
-        Book book;
+        BookView book;
         CatalogPage catalogPage;
-        public BookPage(string TitleAndAuthor, CatalogPage catalogPage)
+        AboutPage aboutPage;
+
+        public BookPage(string TitleAndAuthor, CatalogPage catalogPage, AboutPage aboutPage)
         {
             InitializeComponent();
             book = manager.GetCertainBook(TitleAndAuthor);
             BookTitle.Text = book.Title;
             BookAuthor.Text = book.Author;
             BookPrice.Text = "Цена: " + Math.Round(book.Price, 2);
-            // BookDescription.Text = "Описание: " + book.Description;
-
+            BookDescription.Text = "Описание: " + book.Description;
+            //    img.Source = Image.FromFile("C:\\Users\\Ваня\\Desktop\\nastol.com.ua-9967.jpg", "");
+            img.Source = new BitmapImage(new Uri(book.PicturePath));
             this.catalogPage = catalogPage;
+            this.aboutPage = aboutPage;
+          //  MessageBox.Show(book.Count.ToString());
         }
 
         private void ReturnToCatalog(object  sender, EventArgs e)
         {
             NavigationService.Navigate(catalogPage);
+        }
+
+        private void LoadAboutPage(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(aboutPage);
+        }
+
+        private void LoadPersonalAccountPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new PersonalAccountPage(catalogPage, aboutPage));
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new ConfirmationWindow(book).ShowDialog();
         }
     }
 }

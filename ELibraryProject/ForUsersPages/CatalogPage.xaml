@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ELibraryProject.PersonalAccounts"
       mc:Ignorable="d"
       Title="CatalogPage" Height="770" Width="860">
 
@@ -25,8 +24,8 @@
                         <Button Click="LoadBookPage">
                             <DockPanel DockPanel.Dock="Left" Width="400" Height="350">
                                 <TextBlock x:Name="InfoTextBlock" Text="{Binding TitleAndAuthor}" DockPanel.Dock="Top" FontSize="17"/>
-                                <TextBlock Text="Тут будет фотка" DockPanel.Dock="Left" Width="150" />
-                                <TextBlock TextWrapping="Wrap" Text="Длинное описаниe" DockPanel.Dock = "Right" />
+                                <Image Source="{Binding PicturePath}" DockPanel.Dock="Left" Width="150" />
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Description}" DockPanel.Dock = "Right" Padding="20" />
                             </DockPanel>
                         </Button>
 
@@ -41,13 +40,13 @@
         <Label x:Name="PhoneNubmerLable" Content="+375*********" HorizontalAlignment="Left" Margin="373,34,0,0" VerticalAlignment="Top" FontFamily="Tempus Sans ITC" FontSize="15" Grid.RowSpan="2"/>
         <Label x:Name="AboutUsLable" HorizontalAlignment="Left" Margin="603,12,0,0" VerticalAlignment="Top" Width="86" FontSize="14" Height="32"
             Cursor="Hand">
-            <Hyperlink x:Name="AboutUsHyper" Foreground="Black" TextDecorations="None">
+            <Hyperlink x:Name="AboutUsHyper" Foreground="Black" TextDecorations="None" Click="LoadAboutPage">
                 <Run Text="О магазине"/>
             </Hyperlink>
         </Label>
         <Label x:Name="PersonalAreaLable" HorizontalAlignment="Left" Margin="713,12,0,0" VerticalAlignment="Top" Width="118" FontSize="14" Height="32"
             Cursor="Hand">
-            <Hyperlink x:Name="PersonalAreaHyper" Foreground="Black" TextDecorations="None">
+            <Hyperlink x:Name="PersonalAreaHyper" Foreground="Black" TextDecorations="None" Click="LoadPersonalAccountPage">
                 <Run Text="Личный кабинет"/>
             </Hyperlink>
         </Label>

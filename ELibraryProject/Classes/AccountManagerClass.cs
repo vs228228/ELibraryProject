@@ -23,14 +23,14 @@ namespace ELibraryProject.Classes
     internal static class AccountManagerClass
     {
        static SqlConnection? sqlConnection;
-        public static bool TryEnterToSystem(string login, string password)
+        public static bool TryEnterToSystem(string login, string password, out bool isAdmin)
         {
-
+            isAdmin = false;
             string connectionString = getConnectionString();
             sqlConnection = new SqlConnection(connectionString);
             sqlConnection.Open();
 
-            string sqlExpression = $"SELECT Login, Password FROM Users WHERE Login = @login AND Password = @password";
+            string sqlExpression = $"SELECT Login, Password, isAdmin FROM Users WHERE Login = @login AND Password = @password";
 
             SqlCommand command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@login", login);
@@ -41,6 +41,7 @@ namespace ELibraryProject.Classes
 
             if (reader.Read()) // Если результат запроса не пустой
             {
+                isAdmin = reader.GetBoolean(2);
                 sqlConnection.Close();
                 reader.Close(); ;
                 return true;

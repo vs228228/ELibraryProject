@@ -26,7 +26,7 @@ using System.Text.Json;
 namespace ELibraryProject
 {
 
-    delegate bool TryEnterToSystem(string login, string password);
+    delegate bool TryEnterToSystem(string login, string password, out bool isAdmin);
 
     /// <summary>
     /// Логика взаимодействия для LoginPage.xaml
@@ -52,17 +52,22 @@ namespace ELibraryProject
         {
             string login = LoginTextBox.Text;
             string password = PasswordTextBox.Text;
-            if (tryToEnter is not null && tryToEnter(login, password) is true) // обязательно отделить проверку на null
+            if (tryToEnter is not null && tryToEnter(login, password, out bool isAdmin) is true) // обязательно отделить проверку на null
             {
                 // переход на некст страницу с учетом данных логина и пароля
                 //  MessageBox.Show("Дальше должна быть загружена страница ЛК");
-                if(RememberCheckBox.IsChecked == true)
+                if(RememberCheckBox.IsChecked == true && isAdmin is false)
                 {
                     AccountManagerClass.writeInfoToFile(login, password);
                 }
                 else
                 {
                     AccountManagerClass.writeInfoToFile("", "");
+                }
+
+                if(isAdmin is true)
+                {
+                    // загрузить страницу для админа
                 }
                 
                 new UserWindow(login).Show();
