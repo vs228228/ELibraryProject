@@ -39,6 +39,9 @@ namespace ELibraryProject.ForUsersPages
             UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
             allBooks = CatalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = allBooks;
+            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
+            books = catalogManager.LoadBooks();
+            BooksItemsControl.ItemsSource = books;
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
             if(UserContext.CurrentUser.IsAdmin is true)
@@ -91,6 +94,16 @@ namespace ELibraryProject.ForUsersPages
         {
             string searchText = searchTextBox.Text;
             BooksItemsControl.ItemsSource = new ObservableCollection<BookView>(allBooks.Where(p => p.TitleAndAuthor.Contains(searchText)));
+        }
+
+        private void LoadOrdersPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AdminPages.OrdersAdminPage());
+        }
+
+        private void LoadAddBookPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AddBookPage());
         }
     }
 }
