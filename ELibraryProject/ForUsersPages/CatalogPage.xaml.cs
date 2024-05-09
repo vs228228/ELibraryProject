@@ -27,14 +27,13 @@ namespace ELibraryProject.ForUsersPages
     public partial class CatalogPage : Page
     {
         ObservableCollection<BookView> books = new ObservableCollection<BookView>();
-        CatalogManager catalogManager = new CatalogManager();
         AboutPage aboutPage;
         PersonalAccountPage personalAccountPage;
 
         public CatalogPage(string login)
         {
             InitializeComponent();
-            books = catalogManager.LoadBooks();
+            books = CatalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = books;
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);

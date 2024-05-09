@@ -11,19 +11,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using ELibraryProject.Database;
-using Microsoft.Data.SqlClient;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ELibraryProject.Classes
 {
-    class CatalogManager
+    public class CatalogManager
     {
-        public ObservableCollection<BookView>  LoadBooks()
+        public static ObservableCollection<BookView> LoadBooks()
         {
             return LoadBooksFromDatabase();
         }
 
-        private ObservableCollection<BookView> LoadBooksFromDatabase()
+        private static ObservableCollection<BookView> LoadBooksFromDatabase()
         {
          /*   ObservableCollection<Book> books = new ObservableCollection<Book>();
            SqlConnection sqlConnection = new SqlConnection(connectionString);
@@ -98,7 +97,7 @@ namespace ELibraryProject.Classes
 
         }
 
-        public BookView GetCertainBook(string TitleAndAuthor)
+        public static BookView GetCertainBook(string TitleAndAuthor)
         {
            /* string connectionString = getConnectionString();
             string title = GetBookName(TitleAndAuthor);
@@ -151,24 +150,7 @@ namespace ELibraryProject.Classes
 
         }
 
-        private string getConnectionString()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
-            if (connectionString == null)
-            {
-                throw new InvalidOperationException("Connection string is null");
-            }
-
-            connectionString = connectionString
-                .Replace("{AppDir}", AppDomain.CurrentDomain.BaseDirectory)
-                .Replace("\\ELibraryProject\\bin\\Debug\\net8.0-windows\\", "");
-            // 3 строки выше нужны т.к. у нас нет сервера и мы перекидываемся БД с одного ПК на другой
-            // Потому путь получаем вот таким путём
-
-            return connectionString;
-        }
-
-        private string GetBookName(string TitleAndAuthor)
+        private static string GetBookName(string TitleAndAuthor)
         {
             int index = TitleAndAuthor.IndexOf(",");
             /* KeyValuePair<string, string> keyValuePair = new KeyValuePair<string, string>("login", "password");
@@ -178,7 +160,5 @@ namespace ELibraryProject.Classes
             System.Windows.Forms.MessageBox.Show(newPair.Value); */
             return TitleAndAuthor.Substring(0, index);
         }
-
-
     }
 }
