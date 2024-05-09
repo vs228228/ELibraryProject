@@ -26,23 +26,20 @@ namespace ELibraryProject.ForUsersPages
     /// 
     public partial class CatalogPage : Page
     {
-        ObservableCollection<Book> books = new ObservableCollection<Book>();
+        ObservableCollection<BookView> books = new ObservableCollection<BookView>();
         CatalogManager catalogManager = new CatalogManager();
         AboutPage aboutPage;
         PersonalAccountPage personalAccountPage;
-        string login;
 
         public CatalogPage(string login)
         {
             InitializeComponent();
             books = catalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = books;
-            this.login = login;
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
             UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
-            MessageBox.Show($"Добро пожаловать, {UserContext.CurrentUser.FirstName}!");
-            
+
         }
 
         private void LoadBookPage(object sender, RoutedEventArgs e)

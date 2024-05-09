@@ -24,8 +24,8 @@
                         <Button Click="LoadBookPage">
                             <DockPanel DockPanel.Dock="Left" Width="400" Height="350">
                                 <TextBlock x:Name="InfoTextBlock" Text="{Binding TitleAndAuthor}" DockPanel.Dock="Top" FontSize="17"/>
-                                <TextBlock Text="Тут будет фотка" DockPanel.Dock="Left" Width="150" />
-                                <TextBlock TextWrapping="Wrap" Text="{Binding Description}" DockPanel.Dock = "Right" />
+                                <Image Source="{Binding PicturePath}" DockPanel.Dock="Left" Width="150" />
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Description}" DockPanel.Dock = "Right" Padding="20" />
                             </DockPanel>
                         </Button>
 
