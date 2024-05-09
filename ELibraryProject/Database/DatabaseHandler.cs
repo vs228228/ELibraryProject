@@ -241,8 +241,8 @@ namespace ELibraryProject.Database
 
         public static void AddOrder(Order order)
         {
-            string sqlExpression = "INSERT INTO Orders (UserId, BookId, Number, OrderDate, ApprovalDate, CancellationDate, IsComplete) " +
-                       "VALUES (@UserId, @BookId, @Number, @OrderDate, @ApprovalDate, @CancellationDate, @IsComplete)";
+            string sqlExpression = "INSERT INTO Orders (UserId, BookId, Number, OrderDate, ApprovalDate, CancellationDate, CompletionDate) " +
+                       "VALUES (@UserId, @BookId, @Number, @OrderDate, @ApprovalDate, @CancellationDate, @CompletionDate)";
 
             using (var connection = GetSqlConnection())
             {
@@ -254,7 +254,7 @@ namespace ELibraryProject.Database
                     command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
                     command.Parameters.AddWithValue("@ApprovalDate", (object?)order.ApprovalDate ?? DBNull.Value);
                     command.Parameters.AddWithValue("@CancellationDate", (object?)order.CancellationDate ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@IsComplete", order.IsComplete);
+                    command.Parameters.AddWithValue("@CompletionDate", (object?)order.CompletionDate ?? DBNull.Value);
                     command.ExecuteNonQuery();
                     connection.Close();
                 }
@@ -264,8 +264,8 @@ namespace ELibraryProject.Database
         public static void UpdateOrder(Order order)
         {
             string sqlExpression = "UPDATE Orders SET UserId = @UserId, BookId = @BookId, Number = @Number, " +
-                "OrderDate = @OrderDate, ApprovalDate = @ApprovalDate, CancellationDate = @CancellationDate " +
-                "WHERE Id = @Id";
+                "OrderDate = @OrderDate, ApprovalDate = @ApprovalDate, CancellationDate = @CancellationDate, " +
+                "CompletionDate = @CompletionDate WHERE Id = @Id";
             using (var connection = GetSqlConnection())
             {
                 using (var command = new SqlCommand(sqlExpression, connection))
@@ -276,6 +276,7 @@ namespace ELibraryProject.Database
                     command.Parameters.AddWithValue("@OrderDate", order.OrderDate);
                     command.Parameters.AddWithValue("@ApprovalDate", (object?)order.ApprovalDate ?? DBNull.Value);
                     command.Parameters.AddWithValue("@CancellationDate", (object?)order.CancellationDate ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@CompletionDate", (object?)order.CompletionDate ?? DBNull.Value);
                     command.Parameters.AddWithValue("@Id", order.Id);
 
                     command.ExecuteNonQuery();
@@ -303,7 +304,7 @@ namespace ELibraryProject.Database
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                         ApprovalDate = reader["ApprovalDate"] != DBNull.Value ? Convert.ToDateTime(reader["ApprovalDate"]) : null,
                         CancellationDate = reader["CancellationDate"] != DBNull.Value ? Convert.ToDateTime(reader["CancellationDate"]) : null,
-                        IsComplete = Convert.ToBoolean(reader["IsComplete"])
+                        CompletionDate = reader["CompletionDate"] != DBNull.Value ? Convert.ToDateTime(reader["CompletionDate"]) : null
                     };
                     orders.Add(order);
                 }
@@ -330,7 +331,63 @@ namespace ELibraryProject.Database
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
                         ApprovalDate = reader["ApprovalDate"] != DBNull.Value ? Convert.ToDateTime(reader["ApprovalDate"]) : null,
                         CancellationDate = reader["CancellationDate"] != DBNull.Value ? Convert.ToDateTime(reader["CancellationDate"]) : null,
-                        IsComplete = Convert.ToBoolean(reader["IsComplete"])
+                        CompletionDate = reader["CompletionDate"] != DBNull.Value ? Convert.ToDateTime(reader["CompletionDate"]) : null,
+                    };
+                    orders.Add(order);
+                }
+                connection.Close();
+            }
+            return orders;
+        }
+
+        public static List<Order> GetApprovedOrders()
+        {
+            List<Order> orders = new();
+            using (var connection = GetSqlConnection())
+            {
+                string sqlExpression = "SELECT * FROM Orders WHERE ApprovalDate IS NOT NULL AND CancellationDate IS NULL AND CompletionDate IS NULL";
+                using var command = new SqlCommand(sqlExpression, connection);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Order order = new()
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        UserId = Convert.ToInt32(reader["UserId"]),
+                        BookId = Convert.ToInt32(reader["BookId"]),
+                        Number = Convert.ToInt32(reader["Number"]),
+                        OrderDate = Convert.ToDateTime(reader["OrderDate"]),
+                        ApprovalDate = reader["ApprovalDate"] != DBNull.Value ? Convert.ToDateTime(reader["ApprovalDate"]) : null,
+                        CancellationDate = reader["CancellationDate"] != DBNull.Value ? Convert.ToDateTime(reader["CancellationDate"]) : null,
+                        CompletionDate = reader["CompletionDate"] != DBNull.Value ? Convert.ToDateTime(reader["CompletionDate"]) : null
+                    };
+                    orders.Add(order);
+                }
+                connection.Close();
+            }
+            return orders;
+        }
+
+        public static List<Order> GetArchivedOrders()
+        {
+            List<Order> orders = new();
+            using (var connection = GetSqlConnection())
+            {
+                string sqlExpression = "SELECT * FROM Orders WHERE CompletionDate IS NOT NULL OR CancellationDate IS NOT NULL";
+                using var command = new SqlCommand(sqlExpression, connection);
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Order order = new()
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        UserId = Convert.ToInt32(reader["UserId"]),
+                        BookId = Convert.ToInt32(reader["BookId"]),
+                        Number = Convert.ToInt32(reader["Number"]),
+                        OrderDate = Convert.ToDateTime(reader["OrderDate"]),
+                        ApprovalDate = reader["ApprovalDate"] != DBNull.Value ? Convert.ToDateTime(reader["ApprovalDate"]) : null,
+                        CancellationDate = reader["CancellationDate"] != DBNull.Value ? Convert.ToDateTime(reader["CancellationDate"]) : null,
+                        CompletionDate = reader["CompletionDate"] != DBNull.Value ? Convert.ToDateTime(reader["CompletionDate"]) : null
                     };
                     orders.Add(order);
                 }
@@ -356,9 +413,9 @@ namespace ELibraryProject.Database
                         BookId = Convert.ToInt32(reader["BookId"]),
                         Number = Convert.ToInt32(reader["Number"]),
                         OrderDate = Convert.ToDateTime(reader["OrderDate"]),
-                        ApprovalDate = reader["ApprovalDate"] != DBNull.Value ? Convert.ToDateTime(reader["ApprovalDate"]) : (DateTime?)null,
-                        CancellationDate = reader["CancellationDate"] != DBNull.Value ? Convert.ToDateTime(reader["CancellationDate"]) : (DateTime?)null,
-                        IsComplete = Convert.ToBoolean(reader["IsComplete"])
+                        ApprovalDate = reader["ApprovalDate"] != DBNull.Value ? Convert.ToDateTime(reader["ApprovalDate"]) : null,
+                        CancellationDate = reader["CancellationDate"] != DBNull.Value ? Convert.ToDateTime(reader["CancellationDate"]) : null,
+                        CompletionDate = reader["CompletionDate"] != DBNull.Value ? Convert.ToDateTime(reader["CompletionDate"]) : null
                     };
                 }
                 else
