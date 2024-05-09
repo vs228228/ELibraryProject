@@ -8,7 +8,7 @@
 	  Height="770" Width="860"
 	  Title="BookPage">
 
-	<Grid>
+	<Grid Background="Wheat">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="60"></RowDefinition>
 			<RowDefinition></RowDefinition>
