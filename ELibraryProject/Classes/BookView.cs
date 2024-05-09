@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ELibraryProject.Classes
 {
-    class BookView : Book
+    public class BookView : Book
     {
         public BookView() { }
 

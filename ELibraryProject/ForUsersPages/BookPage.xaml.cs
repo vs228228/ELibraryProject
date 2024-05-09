@@ -38,6 +38,7 @@ namespace ELibraryProject.ForUsersPages
             img.Source = new BitmapImage(new Uri(book.PicturePath));
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
+          //  MessageBox.Show(book.Count.ToString());
         }
 
         private void ReturnToCatalog(object  sender, EventArgs e)
@@ -53,6 +54,11 @@ namespace ELibraryProject.ForUsersPages
         private void LoadPersonalAccountPage(object sender, EventArgs e)
         {
             NavigationService.Navigate(new PersonalAccountPage(catalogPage, aboutPage));
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new ConfirmationWindow(book).ShowDialog();
         }
     }
 }

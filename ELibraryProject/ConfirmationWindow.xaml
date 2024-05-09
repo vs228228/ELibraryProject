@@ -1,0 +1,19 @@
+﻿<Window x:Class="ELibraryProject.ConfirmationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ELibraryProject"
+        mc:Ignorable="d"
+        Title="Подтверждение заказа" Height="250" Width="486"
+        ResizeMode="NoResize"
+        Background="Wheat">
+    <Grid>
+        <TextBlock Name ="BookName" HorizontalAlignment="Left" Margin="43,24,0,0" TextWrapping="Wrap" Text="Text" VerticalAlignment="Top"/>
+        <TextBlock Name ="AuthorName" HorizontalAlignment="Left" Margin="43,54,0,0" TextWrapping="Wrap" Text="Text" VerticalAlignment="Top"/>
+        <TextBox  Name ="CountOfBookTextBox" HorizontalAlignment="Left" Margin="42,123,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="59"/>
+        <TextBlock Name ="CountOfBookBlock" HorizontalAlignment="Left" Margin="43,84,0,0" TextWrapping="Wrap" Text="Text" VerticalAlignment="Top"/>
+        <Button Content="Заказать" HorizontalAlignment="Left" Margin="43,172,0,0" VerticalAlignment="Top" Height="33" Width="100" Click="Button_Click"/>
+
+    </Grid>
+</Window>
