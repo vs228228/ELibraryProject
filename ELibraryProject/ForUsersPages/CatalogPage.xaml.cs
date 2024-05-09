@@ -1,4 +1,5 @@
-﻿using ELibraryProject.Classes;
+﻿using ELibraryProject.AdminPages.Pages;
+using ELibraryProject.Classes;
 using ELibraryProject.Database;
 using System;
 using System.Collections.Generic;
@@ -33,12 +34,21 @@ namespace ELibraryProject.ForUsersPages
 
         public CatalogPage(string login)
         {
+
             InitializeComponent();
+            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
             books = catalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = books;
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
-            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
+            if(UserContext.CurrentUser.IsAdmin is true)
+            {
+                AboutUsLable.Visibility = Visibility.Hidden;
+                PersonalAreaLable.Visibility = Visibility.Hidden;
+                OrdersLable.Visibility = Visibility.Visible;
+                AddBookLable.Visibility = Visibility.Visible;
+            }
+            
 
         }
 
@@ -65,6 +75,16 @@ namespace ELibraryProject.ForUsersPages
         private void LoadPersonalAccountPage(object sender, EventArgs e)
         {
             NavigationService.Navigate(new PersonalAccountPage(this, aboutPage));
+        }
+
+        private void LoadOrdersPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AdminPages.OrdersAdminPage());
+        }
+
+        private void LoadAddBookPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AddBookPage());
         }
     }
 

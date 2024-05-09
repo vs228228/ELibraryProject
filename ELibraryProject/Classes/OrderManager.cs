@@ -13,7 +13,7 @@ namespace ELibraryProject.Classes
         {
             var order = new Order
             {
-                UserId = 5,
+                UserId = UserContext.CurrentUser.Id,
                 BookId = book.Id,
                 Number = number,
                 OrderDate = DateTime.Now
