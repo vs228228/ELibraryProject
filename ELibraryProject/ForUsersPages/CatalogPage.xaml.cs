@@ -92,15 +92,5 @@ namespace ELibraryProject.ForUsersPages
             string searchText = searchTextBox.Text;
             BooksItemsControl.ItemsSource = new ObservableCollection<BookView>(allBooks.Where(p => p.TitleAndAuthor.Contains(searchText)));
         }
-
-        private void LoadOrdersPage(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new AdminPages.OrdersAdminPage());
-        }
-
-        private void LoadAddBookPage(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new AddBookPage());
-        }
     }
 }
