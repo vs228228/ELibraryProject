@@ -15,6 +15,6 @@ namespace ELibraryProject.Classes
         public DateTime OrderDate { get; set; }
         public DateTime? ApprovalDate { get; set; }
         public DateTime? CancellationDate { get; set; }
-        public bool IsComplete { get; set; }
+        public DateTime? CompletionDate { get; set; }
     }
 }
