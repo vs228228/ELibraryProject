@@ -92,6 +92,5 @@ namespace ELibraryProject
             NavigationService.Navigate(new RegistrationPage(this));
             IncorrectPasswordLable.Visibility = Visibility.Hidden;
         }
-
     }
 }

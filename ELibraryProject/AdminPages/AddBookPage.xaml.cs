@@ -158,7 +158,7 @@ namespace ELibraryProject.AdminPages.Pages
 
         private string GetNewPath()
         {
-            return Path.Combine("{AppDir}", $"Databases\\Pictures\\{title.Text}-{author.Text}.jpeg");
+            return Path.Combine("{AppDir}", $"Database\\Pictures\\{title.Text}-{author.Text}.jpeg");
         }
     }
 }

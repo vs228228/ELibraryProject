@@ -8,11 +8,21 @@
 
     <Grid Background="Wheat">
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-
-        <ScrollViewer Grid.Row="1" Width="840">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="searchTextBox" Grid.Column="1" Margin="5" Padding="5" />
+            <Button x:Name="searchButton" Grid.Column="2" Margin="5" Padding="10,5,10,5" Click="SearchButton_Click">Найти</Button>
+        </Grid>
+        <ScrollViewer Grid.Row="2" Width="840">
             <ItemsControl Name="BooksItemsControl">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
