@@ -22,7 +22,7 @@ namespace ELibraryProject.ForUsersPages
     public partial class BookPage : Page
     {
         CatalogManager manager = new CatalogManager();
-        Book book;
+        BookView book;
         CatalogPage catalogPage;
         AboutPage aboutPage;
 
@@ -34,7 +34,8 @@ namespace ELibraryProject.ForUsersPages
             BookAuthor.Text = book.Author;
             BookPrice.Text = "Цена: " + Math.Round(book.Price, 2);
             BookDescription.Text = "Описание: " + book.Description;
-
+            //    img.Source = Image.FromFile("C:\\Users\\Ваня\\Desktop\\nastol.com.ua-9967.jpg", "");
+            img.Source = new BitmapImage(new Uri(book.PicturePath));
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
         }

@@ -11,27 +11,6 @@ namespace ELibraryProject.Classes
 
         public Book() { }
 
-        // Это нужно удалить
-        public Book(string Title, string Author, decimal price)
-        {
-            this.Title = Title;
-            this.Author = Author;
-            this.Price = price;
-            TitleAndAuthor = Title + ", " + Author;
-            this.Description = "";
-        }
-
-        public Book(string Title, string Author, string description, decimal price)
-        {
-            this.Title = Title;
-            this.Author = Author;
-            this.Price = price;
-            TitleAndAuthor = Title + ", " + Author;
-            this.Description = description;
-        }
-
-        // И это тоже
-        public string TitleAndAuthor { get; set; }
 
         public int Id { get; set; }
         public string Title { get; set; }

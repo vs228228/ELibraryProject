@@ -36,7 +36,7 @@
                 <Run Text="Каталог"/>
             </Hyperlink>
         </Label>
-        <Image HorizontalAlignment="Left" Height="422" Margin="1,2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="479" Source="C:\Users\Ваня\Desktop\nastol.com.ua-9967.jpg"
+        <Image Name="img" HorizontalAlignment="Left" Height="422" Margin="1,2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="479" 
                Stretch="Fill"/>
         <TextBlock x:Name="BookTitle" HorizontalAlignment="Left" Margin="497,22,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="26" Height="66" Width="353"/>
         <TextBlock x:Name="BookAuthor" HorizontalAlignment="Left" Margin="497,98,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="66" Width="353"/>
