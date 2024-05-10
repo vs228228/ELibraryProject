@@ -28,6 +28,7 @@ namespace ELibraryProject.ForUsersPages
             InitializeComponent();
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
+            this.LoginLabel.Content =  $"Ваш логин {UserContext.CurrentUser.Login}";
         }
 
         private void ReturnToCatalog(object sender, EventArgs e)

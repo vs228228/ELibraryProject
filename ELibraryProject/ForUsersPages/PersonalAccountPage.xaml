@@ -37,7 +37,7 @@
             </Hyperlink>
         </Label>
         <Label Content="История заказов:" HorizontalAlignment="Left" Margin="11,40,0,0" Grid.Row="1" VerticalAlignment="Top" Height="38" Width="160" FontSize="18"/>
-        <Label Content="Ваш логин -" HorizontalAlignment="Left" Margin="473,40,0,0" Grid.Row="1" VerticalAlignment="Top" Height="38" Width="160" FontSize="18"/>
+        <Label Name = "LoginLabel" Content="Ваш логин -" HorizontalAlignment="Left" Margin="473,40,0,0" Grid.Row="1" VerticalAlignment="Top" Height="38" Width="160" FontSize="18"/>
         <Label Content="Статистика аккаунта:" HorizontalAlignment="Left" Margin="473,69,0,0" Grid.Row="1" VerticalAlignment="Top" Height="38" Width="194" FontSize="18"/>
 
     </Grid>

@@ -1,4 +1,5 @@
-﻿using ELibraryProject.Classes;
+﻿using ELibraryProject.AdminPages.Pages;
+using ELibraryProject.Classes;
 using ELibraryProject.Database;
 using System;
 using System.Collections.Generic;
@@ -33,12 +34,24 @@ namespace ELibraryProject.ForUsersPages
 
         public CatalogPage(string login)
         {
+
             InitializeComponent();
             allBooks = CatalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = allBooks;
+            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
+            allBooks = CatalogManager.LoadBooks();
+            BooksItemsControl.ItemsSource = allBooks;
+            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
-            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
+            if(UserContext.CurrentUser.IsAdmin is true)
+            {
+                AboutUsLable.Visibility = Visibility.Hidden;
+                PersonalAreaLable.Visibility = Visibility.Hidden;
+                OrdersLable.Visibility = Visibility.Visible;
+                AddBookLable.Visibility = Visibility.Visible;
+            }
+            
 
         }
 
@@ -72,5 +85,18 @@ namespace ELibraryProject.ForUsersPages
             string searchText = searchTextBox.Text;
             BooksItemsControl.ItemsSource = new ObservableCollection<BookView>(allBooks.Where(p => p.TitleAndAuthor.Contains(searchText)));
         }
+    
+
+        private void LoadOrdersPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AdminPages.OrdersAdminPage());
+        }
+
+        private void LoadAddBookPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AddBookPage());
+        }
+
+       }
     }
-}
+

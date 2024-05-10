@@ -66,5 +66,18 @@
                 <Run Text="Каталог"/>
             </Hyperlink>
         </Label>
+        <Label x:Name="OrdersLable" HorizontalAlignment="Left" Margin="623,12,0,0" VerticalAlignment="Top" Width="86" FontSize="14" Height="32"
+    Cursor="Hand" Visibility="Hidden">
+            <Hyperlink x:Name="OrdersHyper" Foreground="Black" TextDecorations="None" Click="LoadOrdersPage">
+                <Run Text="Заказы"/>
+            </Hyperlink>
+        </Label>
+        <Label x:Name="AddBookLable" HorizontalAlignment="Left" Margin="713,12,0,0" VerticalAlignment="Top" Width="118" FontSize="14" Height="32"
+            Cursor="Hand" Visibility="Hidden">
+            <Hyperlink x:Name="AddBookHyper" Foreground="Black" TextDecorations="None" Click="LoadAddBookPage">
+                <Run Text="Добавить книгу"/>
+            </Hyperlink>
+        </Label>
+
     </Grid>
 </Page>
