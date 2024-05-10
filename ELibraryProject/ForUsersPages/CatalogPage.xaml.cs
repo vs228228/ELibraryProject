@@ -39,9 +39,6 @@ namespace ELibraryProject.ForUsersPages
             allBooks = CatalogManager.LoadBooks();
             BooksItemsControl.ItemsSource = allBooks;
             UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
-            allBooks = CatalogManager.LoadBooks();
-            BooksItemsControl.ItemsSource = allBooks;
-            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
             if(UserContext.CurrentUser.IsAdmin is true)
