@@ -1,4 +1,5 @@
-﻿using ELibraryProject.Classes;
+﻿using ELibraryProject.AdminPages.Pages;
+using ELibraryProject.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,17 @@ namespace ELibraryProject.ForUsersPages
             img.Source = new BitmapImage(new Uri(book.PicturePath));
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
-          //  MessageBox.Show(book.Count.ToString());
+            if (UserContext.CurrentUser.IsAdmin is true)
+            {
+                AboutUsLable.Visibility = Visibility.Hidden;
+                PersonalAreaLable.Visibility = Visibility.Hidden;
+                BuyButton.Visibility = Visibility.Hidden;
+                OrdersLable.Visibility = Visibility.Visible;
+                AddBookLable.Visibility = Visibility.Visible;
+                EditButton.Visibility = Visibility.Visible;
+            }
+
+            //  MessageBox.Show(book.Count.ToString());
         }
 
         private void ReturnToCatalog(object  sender, EventArgs e)
@@ -55,9 +66,24 @@ namespace ELibraryProject.ForUsersPages
             NavigationService.Navigate(new PersonalAccountPage(catalogPage, aboutPage));
         }
 
+        private void LoadOrdersPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AdminPages.OrdersAdminPage());
+        }
+
+        private void LoadAddBookPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AddBookPage());
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             new ConfirmationWindow(book).ShowDialog();
+        }
+
+        private void EditButtonClick(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new AddBookPage(book));
         }
     }
 }

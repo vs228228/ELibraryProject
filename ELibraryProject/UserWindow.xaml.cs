@@ -29,7 +29,7 @@ namespace ELibraryProject
             this.MaxWidth = 860;
             this.MinHeight = 810;
             this.MinWidth = 860;
-            UserFrame.Content = new CatalogPage(login);
+            UserFrame.Content = new CatalogPage(login, this);
         }
     }
 }

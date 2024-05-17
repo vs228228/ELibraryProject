@@ -150,6 +150,11 @@ namespace ELibraryProject.Classes
 
         }
 
+        public static void OutSystem()
+        {
+            UserContext.CurrentUser = null;
+        }
+
         private static string GetBookName(string TitleAndAuthor)
         {
             int index = TitleAndAuthor.IndexOf(",");
@@ -160,5 +165,7 @@ namespace ELibraryProject.Classes
             System.Windows.Forms.MessageBox.Show(newPair.Value); */
             return TitleAndAuthor.Substring(0, index);
         }
+
+        
     }
 }

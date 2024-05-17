@@ -42,7 +42,20 @@
         <TextBlock x:Name="BookAuthor" HorizontalAlignment="Left" Margin="497,98,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="66" Width="353"/>
         <TextBlock x:Name="BookPrice" HorizontalAlignment="Left" Margin="497,178,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="66" Width="353"/>
         <TextBlock x:Name="BookDescription" HorizontalAlignment="Center" Margin="0,451,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="249" Width="839"/>
-        <Button Content="Купить" HorizontalAlignment="Left" Margin="498,269,0,0" Grid.Row="1" VerticalAlignment="Top" Height="56" Width="148" FontSize="20" Click="Button_Click"/>
+        <Button Name = "BuyButton" Content="Купить" HorizontalAlignment="Left" Margin="498,269,0,0" Grid.Row="1" VerticalAlignment="Top" Height="56" Width="148" FontSize="20" Click="Button_Click"/>
+        <Button Name = "EditButton" Content="Редактировать" HorizontalAlignment="Left" Margin="498,269,0,0" Grid.Row="1" VerticalAlignment="Top" Height="56" Width="148" FontSize="20" Click="EditButtonClick" Visibility="Hidden"/>
+        <Label x:Name="OrdersLable" HorizontalAlignment="Left" Margin="623,12,0,0" VerticalAlignment="Top" Width="86" FontSize="14" Height="32"
+Cursor="Hand" Visibility="Hidden">
+            <Hyperlink x:Name="OrdersHyper" Foreground="Black" TextDecorations="None" Click="LoadOrdersPage">
+                <Run Text="Заказы"/>
+            </Hyperlink>
+        </Label>
+        <Label x:Name="AddBookLable" HorizontalAlignment="Left" Margin="713,12,0,0" VerticalAlignment="Top" Width="118" FontSize="14" Height="32"
+        Cursor="Hand" Visibility="Hidden">
+            <Hyperlink x:Name="AddBookHyper" Foreground="Black" TextDecorations="None" Click="LoadAddBookPage">
+                <Run Text="Добавить книгу"/>
+            </Hyperlink>
+        </Label>
 
     </Grid>
 </Page>
