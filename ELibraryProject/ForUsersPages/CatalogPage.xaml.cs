@@ -31,8 +31,9 @@ namespace ELibraryProject.ForUsersPages
         private ObservableCollection<BookView> searchedBooks;
         private AboutPage aboutPage;
         private PersonalAccountPage personalAccountPage;
+        public Window thisPage;
 
-        public CatalogPage(string login)
+        public CatalogPage(string login, Window thisPage)
         {
 
             InitializeComponent();
@@ -41,15 +42,15 @@ namespace ELibraryProject.ForUsersPages
             UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
-            if(UserContext.CurrentUser.IsAdmin is true)
+            if (UserContext.CurrentUser.IsAdmin is true)
             {
                 AboutUsLable.Visibility = Visibility.Hidden;
                 PersonalAreaLable.Visibility = Visibility.Hidden;
                 OrdersLable.Visibility = Visibility.Visible;
                 AddBookLable.Visibility = Visibility.Visible;
             }
-            
 
+            this.thisPage = thisPage;
         }
 
         private void LoadBookPage(object sender, RoutedEventArgs e)
