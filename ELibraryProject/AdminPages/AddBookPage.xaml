@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:ELibraryProject.AdminPages.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="686"
-      Title="AddBookPage" FontSize="16">
+      Title="AddBookPage" FontSize="16"
+      Background="Wheat">
     <Page.Resources>
         <Style x:Key="FocusVisual">
             <Setter Property="Control.Template">

@@ -8,6 +8,6 @@ namespace ELibraryProject.Classes
 {
     public static class UserContext
     {
-        public static User CurrentUser { get; set; }
+        public static User? CurrentUser { get; set; }
     }
 }

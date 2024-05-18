@@ -1,4 +1,5 @@
-﻿using ELibraryProject.Classes;
+﻿using ELibraryProject.AdminPages.Pages;
+using ELibraryProject.Classes;
 using ELibraryProject.Database;
 using System;
 using System.Collections.Generic;
@@ -26,20 +27,30 @@ namespace ELibraryProject.ForUsersPages
     /// 
     public partial class CatalogPage : Page
     {
-        ObservableCollection<BookView> books = new ObservableCollection<BookView>();
-        CatalogManager catalogManager = new CatalogManager();
-        AboutPage aboutPage;
-        PersonalAccountPage personalAccountPage;
+        private ObservableCollection<BookView> allBooks;
+        private ObservableCollection<BookView> searchedBooks;
+        private AboutPage aboutPage;
+        private PersonalAccountPage personalAccountPage;
+        public Window thisPage;
 
-        public CatalogPage(string login)
+        public CatalogPage(string login, Window thisPage)
         {
+
             InitializeComponent();
-            books = catalogManager.LoadBooks();
-            BooksItemsControl.ItemsSource = books;
+            allBooks = CatalogManager.LoadBooks();
+            BooksItemsControl.ItemsSource = allBooks;
+            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
-            UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
+            if (UserContext.CurrentUser.IsAdmin is true)
+            {
+                AboutUsLable.Visibility = Visibility.Hidden;
+                PersonalAreaLable.Visibility = Visibility.Hidden;
+                OrdersLable.Visibility = Visibility.Visible;
+                AddBookLable.Visibility = Visibility.Visible;
+            }
 
+            this.thisPage = thisPage;
         }
 
         private void LoadBookPage(object sender, RoutedEventArgs e)
@@ -66,6 +77,24 @@ namespace ELibraryProject.ForUsersPages
         {
             NavigationService.Navigate(new PersonalAccountPage(this, aboutPage));
         }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            string searchText = searchTextBox.Text;
+            BooksItemsControl.ItemsSource = new ObservableCollection<BookView>(allBooks.Where(p => p.TitleAndAuthor.Contains(searchText)));
+        }
+    
+
+        private void LoadOrdersPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AdminPages.OrdersAdminPage());
+        }
+
+        private void LoadAddBookPage(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new AddBookPage());
+        }
+
+       }
     }
 
-}

@@ -65,13 +65,18 @@ namespace ELibraryProject
                     AccountManagerClass.writeInfoToFile("", "");
                 }
 
-                if(isAdmin is true)
+                if (isAdmin is true)
                 {
-                    // загрузить страницу для админа
+                    new EmployeeWindow(login).Show();
+                    mainWindow.Close();
+
                 }
-                
-                new UserWindow(login).Show();
-                mainWindow.Close();
+                else
+                {
+
+                    new UserWindow(login).Show();
+                    mainWindow.Close();
+                }
                 
             }
             else
@@ -92,6 +97,5 @@ namespace ELibraryProject
             NavigationService.Navigate(new RegistrationPage(this));
             IncorrectPasswordLable.Visibility = Visibility.Hidden;
         }
-
     }
 }

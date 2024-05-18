@@ -1,4 +1,5 @@
 ﻿using ELibraryProject.Classes;
+using ELibraryProject.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,22 @@ namespace ELibraryProject.ForUsersPages
             InitializeComponent();
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
+            this.LoginLabel.Content =  $"Ваш логин {UserContext.CurrentUser.Login}";
+            OrderTextBlock.Text = LoadOrdersPerUser(); 
+        }
+
+        private string LoadOrdersPerUser()
+        {
+            string str = String.Empty;
+            List<OrderView> orders = OrderManager.GetOrderViewList();
+            foreach (OrderView order in orders)
+            {
+                if(order.EmailAddress == UserContext.CurrentUser.Email)
+                {
+                    str += $"{order.Book} {order.Status}\n";
+                }
+            }
+            return str;
         }
 
         private void ReturnToCatalog(object sender, EventArgs e)
@@ -38,6 +55,19 @@ namespace ELibraryProject.ForUsersPages
         private void LoadAboutPage(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(aboutPage);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            CatalogManager.OutSystem();
+            new MainWindow().Show();
+            catalogPage.thisPage.Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            CatalogManager.OutSystem();
+            catalogPage.thisPage.Close();
         }
     }
 }
