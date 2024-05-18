@@ -31,7 +31,7 @@ namespace ELibraryProject.ForUsersPages
             InitializeComponent();
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
-            this.LoginLabel.Content =  $"Ваш логин {UserContext.CurrentUser.Login}";
+            this.LoginLabel.Content =  $"Ваш логин: {UserContext.CurrentUser.Login}";
             OrderTextBlock.Text = LoadOrdersPerUser(); 
         }
 

@@ -53,13 +53,31 @@ namespace ELibraryProject.Managers
             {
                 var user = users.FirstOrDefault(u => u.Id == order.UserId);
                 var book = books.FirstOrDefault(b => b.Id == order.BookId);
+                string status = "";
+                if (order.ApprovalDate is null && order.CancellationDate is null)
+                {
+                    status = "Не подтверждён";
+                }
+                else if (order.ApprovalDate is not null && order.CancellationDate is null && order.CompletionDate is null)
+                {
+                    status = "Подтверждён";
+                }
+                else if (order.CompletionDate is not null)
+                {
+                    status = "Завершён";
+                }
+                else if (order.CancellationDate is not null)
+                {
+                    status = "Отменён";
+                }
                 list.Add(new OrderView
                 {
                     OrderId = (int)order.Id,
                     UserName = user.FirstName + " " + user.LastName,
                     EmailAddress = user.Email,
                     Book = book.Title + " " + book.Author,
-                    Number = order.Number
+                    Number = order.Number,
+                    Status = status
                 });
             }
 

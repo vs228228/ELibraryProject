@@ -37,12 +37,9 @@
             </Hyperlink>
         </Label>
         <Label Content="История заказов:" HorizontalAlignment="Left" Margin="11,40,0,0" Grid.Row="1" VerticalAlignment="Top" Height="38" Width="160" FontSize="18"/>
-        <Label Name = "LoginLabel" Content="Ваш логин -" HorizontalAlignment="Left" Margin="473,40,0,0" Grid.Row="1" VerticalAlignment="Top" Height="38" Width="160" FontSize="18"/>
-        <Label Content="Статистика аккаунта:" HorizontalAlignment="Left" Margin="473,69,0,0" Grid.Row="1" VerticalAlignment="Top" Height="38" Width="194" FontSize="18"/>
+        <Label Name = "LoginLabel" Content="Ваш логин: " HorizontalAlignment="Left" Margin="473,40,0,0" Grid.Row="1" VerticalAlignment="Top" Height="38" Width="299" FontSize="18"/>
         <Button Content="Выйти из аккаунта" HorizontalAlignment="Left" Margin="678,516,0,0" Grid.Row="1" VerticalAlignment="Top" Height="72" Width="153" Click="Button_Click"/>
         <Button Content="Выйти из приложения" HorizontalAlignment="Left" Margin="678,601,0,0" Grid.Row="1" Height="72" Width="152" VerticalAlignment="Top" Click="Button_Click_1"/>
         <TextBlock Name="OrderTextBlock" HorizontalAlignment="Left" Margin="23,88,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="585" Width="407" FontSize="18"/>
-
-
     </Grid>
 </Page>
