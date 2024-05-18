@@ -3,6 +3,7 @@ using ELibraryProject.Classes;
 using ELibraryProject.Context;
 using ELibraryProject.Database;
 using ELibraryProject.Managers;
+using Microsoft.VisualBasic.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,18 +31,15 @@ namespace ELibraryProject.ForUsersPages
     public partial class CatalogPage : Page
     {
         private ObservableCollection<BookView> allBooks;
-        private ObservableCollection<BookView> searchedBooks;
         private AboutPage aboutPage;
         private PersonalAccountPage personalAccountPage;
         public Window thisPage;
 
         public CatalogPage(string login, Window thisPage)
         {
-
             InitializeComponent();
-            allBooks = CatalogManager.LoadBooks();
-            BooksItemsControl.ItemsSource = allBooks;
             UserContext.CurrentUser = DatabaseHandler.GetUserByLogin(login);
+            Update();
             aboutPage = new AboutPage(this);
             personalAccountPage = new PersonalAccountPage(this, aboutPage);
             if (UserContext.CurrentUser.IsAdmin is true)
@@ -51,22 +49,18 @@ namespace ELibraryProject.ForUsersPages
                 OrdersLable.Visibility = Visibility.Visible;
                 AddBookLable.Visibility = Visibility.Visible;
             }
-
             this.thisPage = thisPage;
         }
 
         private void LoadBookPage(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
+            Button button = sender as Button;
 
-            // Ищем TextBlock внутри кнопки по имени
-            TextBlock textBlock = clickedButton.FindName("InfoTextBlock") as TextBlock;
-
-            if (textBlock != null)
+            BookView bookView = button.CommandParameter as BookView;
+            BookView book = allBooks.SingleOrDefault(book => book.Id == bookView.Id);
+            if (book != null)
             {
-                // Теперь есть доступ к TextBlock и его свойствам
-                string text = textBlock.Text;
-                NavigationService.Navigate(new BookPage(text, this,this.aboutPage));
+                NavigationService.Navigate(new BookPage(book, this, this.aboutPage));
             }
         }
 
@@ -79,6 +73,10 @@ namespace ELibraryProject.ForUsersPages
         {
             NavigationService.Navigate(new PersonalAccountPage(this, aboutPage));
         }
+        private void LoadCatalogPage(object sender, EventArgs e)
+        {
+            Update();
+        }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -86,7 +84,6 @@ namespace ELibraryProject.ForUsersPages
             BooksItemsControl.ItemsSource = new ObservableCollection<BookView>(allBooks.Where(p => p.TitleAndAuthor.Contains(searchText)));
         }
     
-
         private void LoadOrdersPage(object sender, EventArgs e)
         {
             NavigationService.Navigate(new AdminPages.OrdersAdminPage());
@@ -97,6 +94,11 @@ namespace ELibraryProject.ForUsersPages
             NavigationService.Navigate(new AddBookPage());
         }
 
-       }
+        public void Update()
+        {
+            allBooks = CatalogManager.LoadBooks();
+            BooksItemsControl.ItemsSource = allBooks;
+        }
     }
+}
 

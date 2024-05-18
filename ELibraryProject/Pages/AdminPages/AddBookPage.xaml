@@ -156,7 +156,7 @@
         <TextBox x:Name="publicationDate" Grid.Row="2" Grid.Column="3"/>
 
         <Label Content="Описание" Grid.Row="3" Grid.Column="0"/>
-        <TextBox x:Name="description" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3" VerticalContentAlignment="Top"/>
+        <TextBox x:Name="description" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
 
         <Label Content="Кол-во страниц" Grid.Row="7" Grid.Column="0"/>
         <TextBox x:Name="pageCount" Grid.Row="7" Grid.Column="1"/>

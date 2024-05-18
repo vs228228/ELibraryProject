@@ -1,24 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Configuration;
 using Microsoft.Win32;
 using System.IO;
 using ELibraryProject.Database;
-using System.Diagnostics;
-using System.Security.Policy;
-using Microsoft.IdentityModel.Tokens;
 using ELibraryProject.Database.Models;
 
 namespace ELibraryProject.AdminPages.Pages
@@ -61,10 +46,17 @@ namespace ELibraryProject.AdminPages.Pages
             {
                 string tempPath = Path.Combine(Path.GetTempPath(), "tempImage.jpg");
                 File.Copy(GetFullPath(book.PicturePath), tempPath, true);
-                Uri fileUri = new Uri(GetFullPath(tempPath));
-                BitmapImage bitmapImage = new BitmapImage(fileUri);
-                bitmapImage.Freeze();
-                image.Source = bitmapImage;
+
+                using (var fileStream = new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    var bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.StreamSource = fileStream;
+                    bitmapImage.EndInit();
+                    bitmapImage.Freeze();
+                    image.Source = bitmapImage;
+                }
             }
         }
 
@@ -86,6 +78,7 @@ namespace ELibraryProject.AdminPages.Pages
                 book.CoverType = coverType.Text;
                 book.Category = category.Text;
                 DatabaseHandler.UpdateBook(book);
+                MessageBox.Show("Книга изменена");
             }
             else
             {
@@ -104,6 +97,7 @@ namespace ELibraryProject.AdminPages.Pages
                     Category = category.Text
                 };
                 DatabaseHandler.AddBook(newBook);
+                MessageBox.Show("Книга добавлена");
             }
         }
 
@@ -113,7 +107,10 @@ namespace ELibraryProject.AdminPages.Pages
             if (openFileDialog.ShowDialog() == true)
             {
                 Uri fileUri = new Uri(openFileDialog.FileName);
-                BitmapImage bitmapImage = new BitmapImage(fileUri);
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.UriSource = fileUri;
+                bitmapImage.EndInit();
                 bitmapImage.Freeze();
                 image.Source = bitmapImage;
             }

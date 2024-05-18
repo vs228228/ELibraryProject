@@ -36,14 +36,6 @@
                 <Run Text="Каталог"/>
             </Hyperlink>
         </Label>
-        <Image Name="img" HorizontalAlignment="Left" Height="422" Margin="1,2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="479" 
-               Stretch="Fill"/>
-        <TextBlock x:Name="BookTitle" HorizontalAlignment="Left" Margin="497,22,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="26" Height="66" Width="353"/>
-        <TextBlock x:Name="BookAuthor" HorizontalAlignment="Left" Margin="497,98,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="66" Width="353"/>
-        <TextBlock x:Name="BookPrice" HorizontalAlignment="Left" Margin="497,178,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="66" Width="353"/>
-        <TextBlock x:Name="BookDescription" HorizontalAlignment="Center" Margin="0,451,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22" Height="249" Width="839"/>
-        <Button Name = "BuyButton" Content="Купить" HorizontalAlignment="Left" Margin="498,269,0,0" Grid.Row="1" VerticalAlignment="Top" Height="56" Width="148" FontSize="20" Click="Button_Click"/>
-        <Button Name = "EditButton" Content="Редактировать" HorizontalAlignment="Left" Margin="498,269,0,0" Grid.Row="1" VerticalAlignment="Top" Height="56" Width="148" FontSize="20" Click="EditButtonClick" Visibility="Hidden"/>
         <Label x:Name="OrdersLable" HorizontalAlignment="Left" Margin="623,12,0,0" VerticalAlignment="Top" Width="86" FontSize="14" Height="32"
 Cursor="Hand" Visibility="Hidden">
             <Hyperlink x:Name="OrdersHyper" Foreground="Black" TextDecorations="None" Click="LoadOrdersPage">
@@ -56,6 +48,40 @@ Cursor="Hand" Visibility="Hidden">
                 <Run Text="Добавить книгу"/>
             </Hyperlink>
         </Label>
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
 
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Image Name="img" HorizontalAlignment="Left" Margin="5" Grid.Row="0" Stretch="Fill" Grid.RowSpan="9" Width="300" Height="400"/>
+                <TextBlock x:Name="BookTitle" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="26"/>
+                <TextBlock x:Name="BookAuthor" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="22"/>
+                <TextBlock x:Name="BookPublicationDate" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="18"/>
+                <TextBlock x:Name="BookPageCount" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="18"/>
+                <TextBlock x:Name="BookCoverType" HorizontalAlignment="Left" Grid.Row="4" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="18"/>
+                <TextBlock x:Name="BookPublisher" HorizontalAlignment="Left" Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="18"/>
+                <TextBlock x:Name="BookCategory" HorizontalAlignment="Left" Grid.Row="6" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="18"/>
+                <TextBlock x:Name="BookPrice" HorizontalAlignment="Left" Grid.Row="7" Grid.Column="1" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="20"/>
+                <TextBlock x:Name="BookDescription" HorizontalAlignment="Left" Grid.Row="9" Grid.ColumnSpan="2" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" FontSize="18"/>
+                <Button Name = "BuyButton" Content="Купить" HorizontalAlignment="Center" Grid.Row="8" Grid.Column="1" Padding="30,7,30,7" Margin="5" VerticalAlignment="Top" FontSize="18" Click="Button_Click"/>
+                <Button Name = "EditButton" Content="Редактировать" HorizontalAlignment="Center" Grid.Row="8" Grid.Column="1" Padding="30,7,30,7" Margin="5" VerticalAlignment="Top" FontSize="18" Click="EditButtonClick" Visibility="Hidden"/>
+            
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

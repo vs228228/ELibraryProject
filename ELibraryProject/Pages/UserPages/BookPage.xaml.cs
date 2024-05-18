@@ -28,16 +28,24 @@ namespace ELibraryProject.ForUsersPages
         CatalogPage catalogPage;
         AboutPage aboutPage;
 
-        public BookPage(string TitleAndAuthor, CatalogPage catalogPage, AboutPage aboutPage)
+        public BookPage(BookView bookView, CatalogPage catalogPage, AboutPage aboutPage)
         {
             InitializeComponent();
-            book = CatalogManager.GetCertainBook(TitleAndAuthor);
+            book = bookView;
+
             BookTitle.Text = book.Title;
             BookAuthor.Text = book.Author;
+            BookCategory.Text = "Категория: " + book.Category;
+            BookCoverType.Text = "Обложка: " + book.CoverType;
+            BookPublisher.Text = "Издатель: " + book.Publisher;
+            BookCategory.Text = "Категория: " + book.Category;
+            BookPageCount.Text = "Кол-во страниц: " + book.PageCount;
+            BookPublicationDate.Text = "Дата публикации: " + book.PublicationDate;
+
+
             BookPrice.Text = "Цена: " + Math.Round(book.Price, 2);
             BookDescription.Text = "Описание: " + book.Description;
-            //    img.Source = Image.FromFile("C:\\Users\\Ваня\\Desktop\\nastol.com.ua-9967.jpg", "");
-            img.Source = new BitmapImage(new Uri(book.PicturePath));
+            img.Source = book.Picture;
             this.catalogPage = catalogPage;
             this.aboutPage = aboutPage;
             if (UserContext.CurrentUser.IsAdmin is true)
@@ -49,12 +57,11 @@ namespace ELibraryProject.ForUsersPages
                 AddBookLable.Visibility = Visibility.Visible;
                 EditButton.Visibility = Visibility.Visible;
             }
-
-            //  MessageBox.Show(book.Count.ToString());
         }
 
         private void ReturnToCatalog(object  sender, EventArgs e)
         {
+            catalogPage.Update();
             NavigationService.Navigate(catalogPage);
         }
 

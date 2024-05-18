@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ELibraryProject"
         mc:Ignorable="d"
-        Title="EmployeeWindow" Height="810" Width="860">
+        Title="Магазин книг 'ФИТР'" Height="810" Width="860">
     
         <Frame Name = "MainFrame" Background = "White"></Frame>
 </Window>

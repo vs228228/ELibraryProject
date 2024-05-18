@@ -29,7 +29,6 @@ namespace ELibraryProject
             BookName.Text = book.Title;
             AuthorName.Text = book.Author;
             CountOfBookBlock.Text = $"В наличии {this.book.Count} книг. Сколько желаете заказать?";
-            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
