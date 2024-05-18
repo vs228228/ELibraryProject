@@ -5,7 +5,7 @@
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 	  xmlns:local="clr-namespace:ELibraryProject.ForUsersPages"
 	  mc:Ignorable="d"
-	  Height="770" Width="860"
+	  Height="auto" Width="auto"
 	  Title="BookPage">
 
 	<Grid Background="Wheat">
@@ -47,6 +47,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
             <TextBlock FontSize="18" Margin="20,10,20,10" TextWrapping="Wrap" Grid.ColumnSpan="3">
@@ -65,12 +67,18 @@
                 <Run Text="    "/>
                 Так что приходите к нам в гости, чтобы окунуться в мир бесконечных приключений и открытий!
             </TextBlock>
-            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" FontSize="18" Margin="20,10,20,10">
-                Разработали: 
-                <LineBreak/> Студенты группы 10701222
-                <LineBreak/> Старовойтов Иван
-                <LineBreak/> Нестеренко Евгений
+            <TextBlock Grid.Row="1" FontSize="18" Margin="20,10,20,10">
+                Разработали:
             </TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="1" Margin="20,10,20,10" FontSize="18">cтуденты группы 10701222</TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="2" Margin="20,10,20,10" FontSize="18">Старовойтов И. Ю.
+			<LineBreak/>Нестеренко Е. С.</TextBlock>
+            <TextBlock Grid.Row="2" FontSize="18" Margin="20,10,20,10">
+			Принял:
+            </TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="1" Margin="20,10,20,10" FontSize="18">к.т.н., доцент</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="2" Margin="20,10,20,10" FontSize="18">Гурский Н.Н.</TextBlock>
+            <TextBlock Grid.Row="3" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" FontSize="18">Минск. БНТУ. ФИТР. 2024</TextBlock>
         </Grid>
     </Grid>
 </Page>
