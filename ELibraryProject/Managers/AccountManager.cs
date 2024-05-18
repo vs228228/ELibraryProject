@@ -1,28 +1,19 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Configuration;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Windows.Forms;
 using System.IO;
 using System.Text.Json;
-using Microsoft.VisualBasic.Logging;
-using static System.Reflection.Metadata.BlobBuilder;
 
-namespace ELibraryProject.Classes
+namespace ELibraryProject.Managers
 {
     /// <summary>
     /// Класс, работающий с данными пользователя. Реализованы методы регистрации, входа в аккаунт
     /// и восстановление пароля
     /// </summary>
-    internal static class AccountManagerClass
+    internal static class AccountManager
     {
-       static SqlConnection? sqlConnection;
+        static SqlConnection? sqlConnection;
         public static bool TryEnterToSystem(string login, string password, out bool isAdmin)
         {
             isAdmin = false;
@@ -56,9 +47,9 @@ namespace ELibraryProject.Classes
 
         public static bool RegInSystem(string name, string secondName, string email, string login, string password, string passwordAgain,
          string codeWord, string tipToCodeWord, out string message)
-         {
-            if(checkForNulls(name, secondName, email, login, password, passwordAgain,
-                codeWord,tipToCodeWord, out message))
+        {
+            if (checkForNulls(name, secondName, email, login, password, passwordAgain,
+                codeWord, tipToCodeWord, out message))
             {
                 return false;
             }
@@ -74,7 +65,7 @@ namespace ELibraryProject.Classes
             SqlDataReader reader = command.ExecuteReader();
 
 
-            if(reader.Read())
+            if (reader.Read())
             {
                 sqlConnection.Close();
                 reader.Close();
@@ -98,7 +89,7 @@ namespace ELibraryProject.Classes
 
             reader.Close();
 
-            if(password != passwordAgain)
+            if (password != passwordAgain)
             {
                 message = "Ваши пароли не совпадают";
                 return false;
@@ -108,7 +99,7 @@ namespace ELibraryProject.Classes
                 "CodeWord, CodeWordHint) " +
                 "VALUES (@Login, @Password, @Email, @FirstName, @LastName, @CodeWord, @CodeWordHint)";
             command = new SqlCommand(sqlExpression, sqlConnection);
-            command = new SqlCommand (sqlExpression, sqlConnection);
+            command = new SqlCommand(sqlExpression, sqlConnection);
             command.Parameters.AddWithValue("@Login", login);
             command.Parameters.AddWithValue("@Password", password);
             command.Parameters.AddWithValue("@Email", email);
@@ -117,7 +108,7 @@ namespace ELibraryProject.Classes
             command.Parameters.AddWithValue("@CodeWord", codeWord);
             command.Parameters.AddWithValue("@CodeWordHint", tipToCodeWord);
 
-            if(sqlConnection.State == ConnectionState.Open)
+            if (sqlConnection.State == ConnectionState.Open)
             {
                 command.ExecuteNonQuery();
                 sqlConnection.Close();
@@ -131,16 +122,16 @@ namespace ELibraryProject.Classes
                 return false;
             }
 
-            
-         }
- 
+
+        }
+
         /// <summary>
         /// Метод вернёт true и в msg сообщение о первой пустой строке или вернёт false, если все строки не пустые
         /// </summary>
         static bool checkForNulls(string name, string secondName, string email, string login, string password, string passwordAgain,
          string codeWord, string tipToCodeWord, out string message)
         {
-            if(name == "")
+            if (name == "")
             {
                 message = "Заполните поле имени";
                 return true;
@@ -158,7 +149,7 @@ namespace ELibraryProject.Classes
                 return true;
             }
 
-            if (login == "" )
+            if (login == "")
             {
                 message = "Заполните поле логина";
                 return true;
@@ -232,7 +223,7 @@ namespace ELibraryProject.Classes
             command.Parameters.AddWithValue("@email", login);
             command.Parameters.AddWithValue("@codeWord", codeWord);
             SqlDataReader reader = command.ExecuteReader();
-            if(reader.Read())
+            if (reader.Read())
             {
                 sqlConnection.Close();
                 reader.Close();
@@ -284,22 +275,23 @@ namespace ELibraryProject.Classes
                 {
                     newPair = await JsonSerializer.DeserializeAsync<KeyValuePair<string, string>>(fs);
                     login = newPair.Value.Key;
-                    
-                    if(isHashEquals(login, newPair.Value.Value))
+
+                    if (isHashEquals(login, newPair.Value.Value))
                     {
                         LoadAccount(login, mainWindow);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     // если была какая-то ошибка, то просто стираю файл дабы ошибки больше не было
                     fs.Close();
-                    using(FileStream fs1 = new FileStream("user.json", FileMode.Truncate)) { 
+                    using (FileStream fs1 = new FileStream("user.json", FileMode.Truncate))
+                    {
 
                     }
                     return;
                 }
-                
+
             }
 
         }
@@ -324,7 +316,7 @@ namespace ELibraryProject.Classes
                 string passwordHash = reader["Password"].ToString();
                 // после получения пароля сравнию этот пароль с тем, что лежит внутри json
                 // без substring не работает т.к. строка всегда 32 в размере
-                if (String.Compare(passwordHash.Substring(0, hash.Length), hash) == 0)
+                if (string.Compare(passwordHash.Substring(0, hash.Length), hash) == 0)
                 {
                     sqlConnection.Close();
                     reader.Close();

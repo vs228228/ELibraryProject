@@ -1,4 +1,4 @@
-﻿using ELibraryProject.Classes;
+﻿using ELibraryProject.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace ELibraryProject.AuthenticationPages
 
         private void EnterButton_Click(object sender, RoutedEventArgs e)
         {
-            if (AccountManagerClass.isUserExist(LoginTextBox.Text, out string? msg))
+            if (AccountManager.isUserExist(LoginTextBox.Text, out string? msg))
             {
                 CodeWordTextBox.Visibility = Visibility.Visible;
                 CodeWordLable.Visibility = Visibility.Visible;
@@ -56,7 +56,7 @@ namespace ELibraryProject.AuthenticationPages
         private void SecondHandlerFoButton(object sender, RoutedEventArgs e)
         {
             // Дописать переход на след страницу в случае успеха
-            if (AccountManagerClass.isCodeWordRight(CodeWordTextBox.Text, login))
+            if (AccountManager.isCodeWordRight(CodeWordTextBox.Text, login))
             {
                 System.Windows.Forms.MessageBox.Show("Всё верно");
                  NavigationService.Navigate(new ChangePasswordPage(loginPage, login));

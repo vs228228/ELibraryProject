@@ -1,4 +1,4 @@
-﻿using ELibraryProject.Classes;
+﻿using ELibraryProject.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace ELibraryProject
             this.loginPage = loginPage;
         }
 
-        private TryToReg? tryToReg = AccountManagerClass.RegInSystem; // ссылка на метод, который регистрирует
+        private TryToReg? tryToReg = AccountManager.RegInSystem; // ссылка на метод, который регистрирует
 
         private void BackLable_Click(object sender, RoutedEventArgs e)
         {

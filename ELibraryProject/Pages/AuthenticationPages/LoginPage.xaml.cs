@@ -17,10 +17,10 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
-using ELibraryProject.Classes;
 using ELibraryProject.AuthenticationPages;
 using System.IO;
 using System.Text.Json;
+using ELibraryProject.Managers;
 
 
 namespace ELibraryProject
@@ -35,7 +35,7 @@ namespace ELibraryProject
     {
 
      //   private SqlConnection? sqlConnection;
-        private TryEnterToSystem? tryToEnter = AccountManagerClass.TryEnterToSystem; // нужно указать обработчик входа
+        private TryEnterToSystem? tryToEnter = AccountManager.TryEnterToSystem; // нужно указать обработчик входа
         MainWindow mainWindow;
 
         public LoginPage(MainWindow mainWindow)
@@ -43,7 +43,7 @@ namespace ELibraryProject
             InitializeComponent();
             IncorrectPasswordLable.Visibility = Visibility.Hidden;
             this.mainWindow = mainWindow;
-            AccountManagerClass.tryToUseRecordedPassword(mainWindow);
+            AccountManager.tryToUseRecordedPassword(mainWindow);
         }
 
 
@@ -58,11 +58,11 @@ namespace ELibraryProject
                 //  MessageBox.Show("Дальше должна быть загружена страница ЛК");
                 if(RememberCheckBox.IsChecked == true && isAdmin is false)
                 {
-                    AccountManagerClass.writeInfoToFile(login, password);
+                    AccountManager.writeInfoToFile(login, password);
                 }
                 else
                 {
-                    AccountManagerClass.writeInfoToFile("", "");
+                    AccountManager.writeInfoToFile("", "");
                 }
 
                 if (isAdmin is true)

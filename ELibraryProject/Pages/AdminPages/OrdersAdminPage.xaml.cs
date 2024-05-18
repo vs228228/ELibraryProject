@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ELibraryProject.Classes;
 using ELibraryProject.Database;
+using ELibraryProject.Managers;
 
 namespace ELibraryProject.AdminPages
 {

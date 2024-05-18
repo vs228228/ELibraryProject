@@ -15,18 +15,18 @@ using System.Windows.Navigation;
 using System.Configuration;
 using Microsoft.Win32;
 using System.IO;
-using ELibraryProject.Classes;
 using ELibraryProject.Database;
 using System.Diagnostics;
 using System.Security.Policy;
 using Microsoft.IdentityModel.Tokens;
+using ELibraryProject.Database.Models;
 
 namespace ELibraryProject.AdminPages.Pages
 {
-	/// <summary>
-	/// Логика взаимодействия для AddGoodsPage.xaml
-	/// </summary>
-	public partial class AddBookPage : Page
+    /// <summary>
+    /// Логика взаимодействия для AddGoodsPage.xaml
+    /// </summary>
+    public partial class AddBookPage : Page
 	{
 		private OpenFileDialog openFileDialog;
         private bool isChange;

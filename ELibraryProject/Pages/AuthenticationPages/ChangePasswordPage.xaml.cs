@@ -1,4 +1,4 @@
-﻿using ELibraryProject.Classes;
+﻿using ELibraryProject.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace ELibraryProject.AuthenticationPages
         {
             string password = PasswordTextBox.Text;
             string passwordAgain = PasswordAgainTextBox.Text;
-            if(AccountManagerClass.changePassword(login, password, passwordAgain, out string msg))
+            if(AccountManager.changePassword(login, password, passwordAgain, out string msg))
             {
                 MessageBox.Show("Пароль успешно изменён");
                 NavigationService.Navigate(loginPage);

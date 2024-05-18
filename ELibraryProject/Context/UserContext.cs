@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ELibraryProject.Database.Models;
 
-namespace ELibraryProject.Classes
+namespace ELibraryProject.Context
 {
     public static class UserContext
     {

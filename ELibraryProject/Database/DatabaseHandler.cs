@@ -1,5 +1,4 @@
-﻿using ELibraryProject.Classes;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using ELibraryProject.Database.Models;
 
 namespace ELibraryProject.Database
 {

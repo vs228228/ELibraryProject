@@ -1,11 +1,14 @@
-﻿using ELibraryProject.Database;
+﻿using ELibraryProject.Classes;
+using ELibraryProject.Context;
+using ELibraryProject.Database;
+using ELibraryProject.Database.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ELibraryProject.Classes
+namespace ELibraryProject.Managers
 {
     internal class OrderManager
     {
@@ -46,7 +49,7 @@ namespace ELibraryProject.Classes
             var books = DatabaseHandler.GetBooks();
             var users = DatabaseHandler.GetUsers();
 
-            foreach (var order in orders )
+            foreach (var order in orders)
             {
                 var user = users.FirstOrDefault(u => u.Id == order.UserId);
                 var book = books.FirstOrDefault(b => b.Id == order.BookId);

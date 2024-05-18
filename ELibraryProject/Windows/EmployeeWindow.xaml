@@ -8,5 +8,4 @@
         Title="EmployeeWindow" Height="810" Width="860">
     
         <Frame Name = "MainFrame" Background = "White"></Frame>
-    
 </Window>
